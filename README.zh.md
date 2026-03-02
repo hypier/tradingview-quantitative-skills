@@ -1,5 +1,7 @@
 # TradingView 量化投资分析技能
 
+[English](README.md) | [简体中文](README.zh.md)
+
 基于 TradingView 数据的专业量化投资分析系统，提供智能选股、技术形态识别、市场复盘、风险管理、事件驱动分析等功能。
 
 ## 功能特性
@@ -226,7 +228,7 @@ tradingview_get_price(
 ## 目录结构
 
 ```
-tradingview-quantitative/
+tradingview-quantitative-skills/
 ├── README.md                    # 本文件 - 用户指南
 ├── README.zh.md                 # 中文版用户指南
 ├── SKILL.md                     # AI 技能描述（给 AI 看的）

@@ -1,5 +1,7 @@
 # TradingView Quantitative Investment Analysis Skill
 
+[English](README.md) | [简体中文](README.zh.md)
+
 Professional quantitative investment analysis system based on TradingView data providing intelligent stock screening, technical pattern recognition, market review, risk management, and event-driven analysis.
 
 ## Features
