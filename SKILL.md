@@ -1,6 +1,9 @@
 ---
 name: tradingview-quantitative
-description: Professional quantitative investment analysis system based on TradingView data providing intelligent stock screening, technical pattern recognition, market review, risk management, and event-driven analysis. Use cases: (1) Stock screening - when users say "help me select stocks", "screen stocks", "find stocks meeting criteria"; (2) Pattern analysis - when users say "analyze patterns", "technical patterns", "what patterns exist"; (3) Market review - when users say "market review", "how is the market today", "what investment opportunities"; (4) Risk management - when users say "position suggestions", "risk assessment", "how much to buy", "stop loss level"; (5) Event analysis - when users say "event analysis", "impact analysis", "policy impact", "earnings impact"; (6) Individual stock analysis - when users say "analyze a stock", "how is XX", "can I buy XX"; (7) Fundamental screening - when users say "high dividend stocks", "low valuation", "financial analysis"; (8) Sector rotation - when users say "sector rotation", "which sector is strong", "industry comparison"; (9) Multi-timeframe analysis - when users say "multi-period analysis", "long-term and short-term trends". Provides multi-factor comprehensive scoring, pattern confidence assessment, trading strategy recommendations, and risk control solutions.
+description: >
+  Professional quantitative investment analysis system based on TradingView data.
+  Provides intelligent stock screening, technical pattern recognition, market review,
+  risk management, and event-driven analysis with multi-factor scoring and trading strategies.
 ---
 
 # Quantitative Investment Analysis Expert
