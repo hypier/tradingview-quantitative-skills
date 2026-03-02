@@ -2,7 +2,18 @@
 
 [English](README.md) | [简体中文](README.zh.md)
 
+[![Install with skills](https://img.shields.io/badge/install-skills-blue)](https://skills.sh/hypier/tradingview-quantitative-skills/tradingview-quantitative)
+[![GitHub](https://img.shields.io/github/stars/hypier/tradingview-quantitative-skills?style=social)](https://github.com/hypier/tradingview-quantitative-skills)
+
 基于 TradingView 数据的专业量化投资分析系统，提供智能选股、技术形态识别、市场复盘、风险管理、事件驱动分析等功能。
+
+## 安装
+
+一键安装此技能：
+
+```bash
+npx skills add hypier/tradingview-quantitative-skills
+```
 
 ## 功能特性
 

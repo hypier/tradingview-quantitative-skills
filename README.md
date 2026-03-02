@@ -2,7 +2,18 @@
 
 [English](README.md) | [简体中文](README.zh.md)
 
+[![Install with skills](https://img.shields.io/badge/install-skills-blue)](https://skills.sh/hypier/tradingview-quantitative-skills/tradingview-quantitative)
+[![GitHub](https://img.shields.io/github/stars/hypier/tradingview-quantitative-skills?style=social)](https://github.com/hypier/tradingview-quantitative-skills)
+
 Professional quantitative investment analysis system based on TradingView data providing intelligent stock screening, technical pattern recognition, market review, risk management, and event-driven analysis.
+
+## Installation
+
+Install this skill with one command:
+
+```bash
+npx skills add hypier/tradingview-quantitative-skills
+```
 
 ## Features
 
@@ -228,7 +239,7 @@ Complete list: `tradingview_get_metadata(type='languages')`
 ## Directory Structure
 
 ```
-tradingview-quantitative/
+tradingview-quantitative-skills/
 ├── README.md                    # This file - User guide
 ├── SKILL.md                     # AI skill description (for AI)
 ├── references/                  # Reference materials
