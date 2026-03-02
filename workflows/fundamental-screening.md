@@ -1,122 +1,122 @@
 ---
-description: 基本面筛选工作流 - 利用排行榜多种 columnset 筛选价值股
+description: Fundamental Screening Workflow - Use multiple columnsets to screen value stocks
 ---
 
-# 基本面筛选工作流
+# Fundamental Screening Workflow
 
-利用 `tradingview_get_leaderboard` 的多种 columnset（valuation/profitability/dividends/balance_sheet/income_statement/cash_flow），从基本面维度筛选优质标的。
+Use `tradingview_get_leaderboard` with various columnsets (valuation/profitability/dividends/balance_sheet/income_statement/cash_flow) to screen quality stocks from a fundamental perspective.
 
-## 执行步骤
+## Execution Steps
 
-### 步骤 1: 确定筛选策略
+### Step 1: Determine Screening Strategy
 
-根据用户需求确定筛选策略：
+Determine screening strategy based on user needs:
 
-| 策略 | 核心 columnset | 关键指标 |
-|------|---------------|---------|
-| 价值投资 | valuation | 低 PE、低 PB、低 PS |
-| 高股息 | dividends | 高股息率、稳定派息 |
-| 成长股 | profitability + income_statement | 高 ROE、营收增长 |
-| 财务健康 | balance_sheet + cash_flow | 低负债率、充裕现金流 |
+| Strategy | Core Columnset | Key Metrics |
+|----------|---------------|-------------|
+| Value Investing | valuation | Low PE, Low PB, Low PS |
+| High Dividend | dividends | High dividend yield, stable dividends |
+| Growth Stocks | profitability + income_statement | High ROE, revenue growth |
+| Financial Health | balance_sheet + cash_flow | Low debt ratio, ample cash flow |
 
-### 步骤 2: 获取元数据
-
-```
-tradingview_get_metadata(type='markets')        # 获取 market_code
-tradingview_get_metadata(type='columnsets')      # 确认可用 columnset
-```
-
-### 步骤 3: 获取排行榜数据（多 columnset）
-
-根据策略组合调用，以价值投资为例：
+### Step 2: Get Metadata
 
 ```
-# 获取估值数据
+tradingview_get_metadata(type='markets')        # Get market_code
+tradingview_get_metadata(type='columnsets')      # Confirm available columnsets
+```
+
+### Step 3: Get Leaderboard Data (Multiple Columnsets)
+
+Call based on strategy combination, using value investing as example:
+
+```
+# Get valuation data
 tradingview_get_leaderboard(
   asset_type='stocks', tab='all-stocks',
   market_code='china', columnset='valuation', count=100
 )
 
-# 获取盈利能力数据
+# Get profitability data
 tradingview_get_leaderboard(
   asset_type='stocks', tab='all-stocks',
   market_code='china', columnset='profitability', count=100
 )
 
-# 获取股息数据
+# Get dividend data
 tradingview_get_leaderboard(
   asset_type='stocks', tab='high-dividend',
   market_code='china', columnset='dividends', count=50
 )
 ```
 
-### 步骤 4: 交叉筛选
+### Step 4: Cross-Filter
 
-对多个 columnset 的结果进行交叉筛选：
+Cross-filter results from multiple columnsets:
 
-**价值投资筛选条件示例**：
-- PE < 20（合理估值）
-- PB < 3（资产折价）
-- ROE > 15%（盈利能力强）
-- 股息率 > 2%（分红保障）
+**Value Investing Filter Example**:
+- PE < 20 (reasonable valuation)
+- PB < 3 (asset discount)
+- ROE > 15% (strong profitability)
+- Dividend yield > 2% (dividend protection)
 
-**成长股筛选条件示例**：
-- 营收同比增长 > 20%
-- 净利润增长 > 15%
+**Growth Stock Filter Example**:
+- Revenue YoY growth > 20%
+- Net profit growth > 15%
 - ROE > 20%
-- 毛利率 > 40%
+- Gross margin > 40%
 
-### 步骤 5: 技术面验证
+### Step 5: Technical Validation
 
-对筛选出的 Top 候选（5-10只），逐个调用：
+For top candidates (5-10), call individually:
 
 ```
 tradingview_get_ta(symbol, include_indicators=true)
 ```
 
-过滤掉技术面明显走弱的标的（如 RSI > 80 超买、MACD 死叉）。
+Filter out stocks with obviously weak technicals (e.g., RSI > 80 overbought, MACD death cross).
 
-### 步骤 6: 生成筛选报告
+### Step 6: Generate Screening Report
 
 ```markdown
-# 基本面筛选结果 - [策略名称]
+# Fundamental Screening Results - [Strategy Name]
 
-## 筛选条件
-- [列出所有条件]
+## Screening Criteria
+- [List all criteria]
 
-## 符合条件的股票（共 N 只）
+## Qualified Stocks (Total: N)
 
-| 排名 | 股票 | PE | PB | ROE | 股息率 | 技术评分 |
-|------|------|----|----|-----|--------|---------|
+| Rank | Stock | PE | PB | ROE | Dividend Yield | Technical Score |
+|------|-------|----|----|-----|----------------|-----------------|
 | 1 | ... | ... | ... | ... | ... | ... |
 
-## 详细分析（Top 5）
-### 1. [股票名称]
-- 估值：...
-- 盈利：...
-- 技术面：...
-- 买入建议：...
+## Detailed Analysis (Top 5)
+### 1. [Stock Name]
+- Valuation: ...
+- Profitability: ...
+- Technical: ...
+- Buy recommendation: ...
 ```
 
-## 常用筛选组合
+## Common Screening Combinations
 
-### 高股息策略
+### High Dividend Strategy
 ```
-tab='high-dividend' + columnset='dividends' → 股息率排名
-交叉 columnset='profitability' → 确认盈利可持续
-交叉 columnset='balance_sheet' → 确认财务健康
-```
-
-### 低估值策略
-```
-tab='all-stocks' + columnset='valuation' → PE/PB 排名
-交叉 columnset='income_statement' → 确认营收利润
-交叉 columnset='cash_flow' → 确认现金流
+tab='high-dividend' + columnset='dividends' → Dividend yield ranking
+Cross with columnset='profitability' → Confirm sustainable earnings
+Cross with columnset='balance_sheet' → Confirm financial health
 ```
 
-### 白马股策略
+### Low Valuation Strategy
 ```
-tab='large-cap' + columnset='profitability' → 大盘高ROE
-交叉 columnset='performance' → 确认业绩趋势
-交叉 columnset='dividends' → 分红保障
+tab='all-stocks' + columnset='valuation' → PE/PB ranking
+Cross with columnset='income_statement' → Confirm revenue and profit
+Cross with columnset='cash_flow' → Confirm cash flow
+```
+
+### Blue Chip Strategy
+```
+tab='large-cap' + columnset='profitability' → Large-cap high ROE
+Cross with columnset='performance' → Confirm performance trend
+Cross with columnset='dividends' → Dividend protection
 ```

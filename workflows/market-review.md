@@ -1,133 +1,133 @@
 ---
-description: 市场复盘工作流 - 每日市场分析和投资机会发现
+description: Market Review Workflow - Daily market analysis and investment opportunity discovery
 ---
 
-# 市场复盘工作流
+# Market Review Workflow
 
-每日市场复盘，追踪热点板块和资金流向，发现投资机会。
+Daily market review, tracking hot sectors and capital flows, discovering investment opportunities.
 
-## 执行步骤
+## Execution Steps
 
-### 步骤 1: 获取元数据
-
-```
-tradingview_get_metadata(type='markets')  # 确认 market_code
-```
-
-### 步骤 2: 获取涨跌榜数据
-
-并行调用获取多维度数据：
+### Step 1: Get Metadata
 
 ```
-# 涨幅榜
+tradingview_get_metadata(type='markets')  # Confirm market_code
+```
+
+### Step 2: Get Gainers/Losers Data
+
+Call in parallel to get multi-dimensional data:
+
+```
+# Gainers
 tradingview_get_leaderboard(
   asset_type='stocks', tab='gainers',
   market_code='china', columnset='overview', count=50
 )
 
-# 跌幅榜
+# Losers
 tradingview_get_leaderboard(
   asset_type='stocks', tab='losers',
   market_code='china', columnset='overview', count=50
 )
 
-# 活跃股（成交量最大）
+# Most active (highest volume)
 tradingview_get_leaderboard(
   asset_type='stocks', tab='active',
   market_code='china', columnset='overview', count=30
 )
 
-# 异常放量
+# Unusual volume
 tradingview_get_leaderboard(
   asset_type='stocks', tab='unusual-volume',
   market_code='china', columnset='overview', count=30
 )
 ```
 
-### 步骤 3: 获取市场新闻
+### Step 3: Get Market News
 
 ```
 tradingview_get_news(market='stock', market_country='CN', lang='zh-Hans', limit=10)
 ```
 
-对重要新闻获取详情：
+Get details for important news:
 ```
 tradingview_get_news_detail(news_id, lang='zh-Hans')
 ```
 
-### 步骤 4: 获取指数行情（可选）
+### Step 4: Get Index Quotes (Optional)
 
 ```
 tradingview_get_quote_batch(
-  symbols=["SSE:000001", "SZSE:399001", "SZSE:399006"]  # 上证/深证/创业板
+  symbols=["SSE:000001", "SZSE:399001", "SZSE:399006"]  # Shanghai/Shenzhen/ChiNext
 )
 ```
 
-### 步骤 5: 识别热点板块
+### Step 5: Identify Hot Sectors
 
-分析涨幅榜中的行业分布：
-- 将涨幅前50只股票按行业归类
-- 统计各行业在涨幅榜中的数量和平均涨幅
-- 识别占比最高的 3-5 个板块
+Analyze industry distribution in gainers list:
+- Categorize top 50 gainers by industry
+- Count number and average gain for each industry
+- Identify top 3-5 sectors with highest representation
 
-### 步骤 6: 分析资金流向
+### Step 6: Analyze Capital Flow
 
-通过成交量数据分析：
-- 活跃股和异常放量股的行业分布
-- 涨幅榜 vs 跌幅榜的成交量对比
-- 放量上涨的个股（资金流入信号）
+Analyze through volume data:
+- Industry distribution of active and unusual volume stocks
+- Volume comparison between gainers vs losers
+- Stocks with volume surge and price increase (capital inflow signal)
 
-### 步骤 7: 关联新闻与行情
+### Step 7: Correlate News with Market Action
 
-将新闻中的公司/行业与涨跌榜关联：
-- 涨停股的新闻催化剂
-- 板块异动的政策/事件驱动
-- 潜在持续性评估
+Correlate companies/industries in news with gainers/losers:
+- News catalysts for limit-up stocks
+- Policy/event drivers for sector movements
+- Sustainability assessment
 
-### 步骤 8: 生成复盘报告
+### Step 8: Generate Review Report
 
 ```markdown
-# [市场] 市场复盘 - YYYY-MM-DD
+# [Market] Market Review - YYYY-MM-DD
 
-## 市场概览
-- 指数表现: [上证/深证/创业板涨跌幅]
-- 涨跌家数: XX涨 / XX跌
-- 成交额: XX亿（环比 +/-XX%）
+## Market Overview
+- Index performance: [Shanghai/Shenzhen/ChiNext changes]
+- Advance/decline: XX up / XX down
+- Trading volume: XX billion (vs previous +/-XX%)
 
-## 热点板块（按强度排名）
-| 排名 | 板块 | 涨幅 | 代表个股 | 催化剂 |
-|------|------|------|---------|-------|
+## Hot Sectors (Ranked by strength)
+| Rank | Sector | Gain | Representative Stocks | Catalyst |
+|------|--------|------|----------------------|----------|
 
-## 涨幅榜 Top 10
-| 排名 | 股票 | 涨幅 | 成交量 | 异常信号 |
-|------|------|------|--------|---------|
+## Top 10 Gainers
+| Rank | Stock | Gain | Volume | Unusual Signal |
+|------|-------|------|--------|----------------|
 
-## 资金流向
-- 主力流入板块: ...
-- 主力流出板块: ...
-- 异常放量个股: ...
+## Capital Flow
+- Main inflow sectors: ...
+- Main outflow sectors: ...
+- Unusual volume stocks: ...
 
-## 新闻要点
-1. [新闻标题] - [影响分析]
+## News Highlights
+1. [News title] - [Impact analysis]
 2. ...
 
-## 投资机会
-- [机会1]: 原因和建议标的
-- [机会2]: ...
+## Investment Opportunities
+- [Opportunity 1]: Reason and recommended stocks
+- [Opportunity 2]: ...
 
-## 风险提示
-- [风险1]
-- [风险2]
+## Risk Warnings
+- [Risk 1]
+- [Risk 2]
 ```
 
-## 示例
+## Example
 
-**用户**: "今天A股市场怎么样？"
+**User**: "How was the A-share market today?"
 
-**执行**:
+**Execution**:
 1. `get_metadata(type='markets')` → china
-2. `get_leaderboard` × 4（gainers/losers/active/unusual-volume）
-3. `get_news(market_country='CN', lang='zh-Hans')` + 详情
-4. `get_quote_batch` → 指数行情
-5. 板块归类 → 热点识别 → 新闻关联
-6. 生成复盘报告
+2. `get_leaderboard` × 4 (gainers/losers/active/unusual-volume)
+3. `get_news(market_country='CN', lang='zh-Hans')` + details
+4. `get_quote_batch` → Index quotes
+5. Sector categorization → Hot sector identification → News correlation
+6. Generate review report

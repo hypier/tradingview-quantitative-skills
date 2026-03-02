@@ -1,126 +1,126 @@
 ---
-description: 个股深度分析工作流 - 组合多工具对单个标的做全面分析
+description: Deep Stock Analysis Workflow - Comprehensive analysis of individual stocks using multiple tools
 ---
 
-# 个股深度分析工作流
+# Deep Stock Analysis Workflow
 
-组合多个 MCP 工具，对单个标的做全面分析，输出综合报告和交易建议。
+Combine multiple MCP tools to perform comprehensive analysis on individual stocks, outputting integrated reports and trading recommendations.
 
-## 执行步骤
+## Execution Steps
 
-### 步骤 1: 确认标的
+### Step 1: Confirm Symbol
 
-若用户输入的是中文名/简称，先搜索确认准确 symbol：
+If user input is Chinese name/abbreviation, search to confirm accurate symbol:
 
 ```
-tradingview_search_market(query="用户输入", filter="stock", lang="zh")
+tradingview_search_market(query="user input", filter="stock", lang="zh")
 ```
 
-确认 symbol 格式为 `EXCHANGE:SYMBOL`（如 `SSE:688118`、`NASDAQ:AAPL`）。
+Confirm symbol format is `EXCHANGE:SYMBOL` (e.g., `SSE:688118`, `NASDAQ:AAPL`).
 
-### 步骤 2: 获取实时行情
+### Step 2: Get Real-time Quote
 
 ```
 tradingview_get_quote(symbol, session="regular")
 ```
 
-提取关键数据：
-- 当前价、涨跌幅、成交量、成交额
-- 买一/卖一价、买卖量
-- 52周最高/最低、市值
+Extract key data:
+- Current price, change %, volume, turnover
+- Bid/ask price, bid/ask volume
+- 52-week high/low, market cap
 
-### 步骤 3: 获取多时间框架K线
+### Step 3: Get Multi-Timeframe Charts
 
-并行调用获取不同周期数据：
+Call in parallel to get data for different periods:
 
 ```
-tradingview_get_price(symbol, timeframe='D', range=120)   # 日线 - 中期趋势
-tradingview_get_price(symbol, timeframe='W', range=52)    # 周线 - 中长期
-tradingview_get_price(symbol, timeframe='60', range=100)  # 60分钟 - 短期细节
+tradingview_get_price(symbol, timeframe='D', range=120)   # Daily - medium-term trend
+tradingview_get_price(symbol, timeframe='W', range=52)    # Weekly - medium to long-term
+tradingview_get_price(symbol, timeframe='60', range=100)  # 60-minute - short-term details
 ```
 
-可选：`type='HeikinAshi'` 获取平均K线，更清晰显示趋势。
+Optional: `type='HeikinAshi'` to get Heikin Ashi candles for clearer trend visualization.
 
-### 步骤 4: 获取详细技术分析
+### Step 4: Get Detailed Technical Analysis
 
 ```
 tradingview_get_ta(symbol, include_indicators=true)
 ```
 
-**关键指标解读**：
-- 多周期信号汇总（1分钟/5分钟/15分钟/1小时/4小时/日/周/月）
-- RSI(14)：>70 超买，<30 超卖
-- MACD：金叉/死叉，DIF与0轴关系
-- ADX(14)：>25 有趋势，>50 强趋势
-- 均线排列：SMA5/10/20/60 相对关系
+**Key Indicator Interpretation**:
+- Multi-timeframe signal summary (1min/5min/15min/1hour/4hour/daily/weekly/monthly)
+- RSI(14): >70 overbought, <30 oversold
+- MACD: Golden cross/death cross, DIF relationship with zero line
+- ADX(14): >25 trending, >50 strong trend
+- Moving average alignment: SMA5/10/20/60 relative relationships
 
-详细评分方法参见 `references/technical-analysis.md`。
+See `references/technical-analysis.md` for detailed scoring methodology.
 
-### 步骤 5: 获取相关新闻
+### Step 5: Get Related News
 
 ```
 tradingview_get_news(symbol=symbol, lang="zh-Hans", limit=5)
 ```
 
-对重要新闻获取详情：
+Get details for important news:
 ```
 tradingview_get_news_detail(news_id, lang="zh-Hans")
 ```
 
-### 步骤 6: 查询近期事件
+### Step 6: Query Upcoming Events
 
 ```
-tradingview_get_calendar(type="earnings", from=now, to=now+30天, market="china")
+tradingview_get_calendar(type="earnings", from=now, to=now+30days, market="china")
 ```
 
-检查是否有即将到来的财报、分红等事件。
+Check for upcoming earnings, dividends, and other events.
 
-### 步骤 7: 生成综合报告
+### Step 7: Generate Comprehensive Report
 
-输出结构：
+Output structure:
 
 ```markdown
-# [股票名称] (代码) 深度分析
+# [Stock Name] (Symbol) Deep Analysis
 
-## 基本信息
-- 当前价 / 涨跌幅 / 成交量
-- 市值 / 52周区间
+## Basic Information
+- Current price / Change % / Volume
+- Market cap / 52-week range
 
-## 技术面分析
-- 多周期趋势判断（月/周/日/小时）
-- 关键指标状态（RSI、MACD、ADX、均线）
-- 支撑位 / 阻力位
-- 综合技术评分（0-100）
+## Technical Analysis
+- Multi-timeframe trend assessment (monthly/weekly/daily/hourly)
+- Key indicator status (RSI, MACD, ADX, moving averages)
+- Support levels / Resistance levels
+- Overall technical score (0-100)
 
-## 形态识别
-- 当前形态判断
-- 置信度评估
+## Pattern Recognition
+- Current pattern identification
+- Confidence assessment
 
-## 新闻面
-- 近期重要新闻摘要
-- 影响评估
+## News Analysis
+- Recent important news summary
+- Impact assessment
 
-## 近期事件
-- 财报日期 / 分红日期
+## Upcoming Events
+- Earnings date / Dividend date
 
-## 交易建议
-- 操作方向（买入/观望/卖出）
-- 建议入场价
-- 止损位 / 目标位
-- 仓位建议
-- 风险收益比
+## Trading Recommendations
+- Action direction (Buy/Hold/Sell)
+- Suggested entry price
+- Stop loss / Target price
+- Position size recommendation
+- Risk-reward ratio
 
-## 风险提示
+## Risk Warnings
 ```
 
-## 示例
+## Example
 
-**用户**: "帮我分析一下普元信息"
+**User**: "Help me analyze Primeton"
 
-**执行**:
+**Execution**:
 1. `search_market(query="普元信息", filter="stock")` → SSE:688118
-2. `get_quote(symbol="SSE:688118")` → 实时行情
-3. `get_price` × 3个时间框架 → K线数据
-4. `get_ta(include_indicators=true)` → 详细技术指标
-5. `get_news(symbol="SSE:688118", lang="zh-Hans")` → 相关新闻
-6. 综合评分，生成报告
+2. `get_quote(symbol="SSE:688118")` → Real-time quote
+3. `get_price` × 3 timeframes → Chart data
+4. `get_ta(include_indicators=true)` → Detailed technical indicators
+5. `get_news(symbol="SSE:688118", lang="zh-Hans")` → Related news
+6. Comprehensive scoring, generate report

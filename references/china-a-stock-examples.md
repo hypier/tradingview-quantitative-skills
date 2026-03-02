@@ -1,98 +1,98 @@
-# A股实战案例
+# China A-Share Practical Examples
 
-## 案例 1: 智能选股 - 科技板块
+## Example 1: Smart Stock Selection - Technology Sector
 
-**用户请求**:
+**User Request**:
 ```
-"帮我从A股科技板块中筛选出强势股"
+"Help me screen for strong stocks from the A-share technology sector"
 ```
 
-**Skill 执行过程**:
+**Skill Execution Process**:
 
-1. 获取科技板块候选池（150只）
-2. 技术面筛选（RSI、MACD、趋势）
-3. 综合评分排序
-4. 返回 Top 10
+1. Get technology sector candidate pool (150 stocks)
+2. Technical screening (RSI, MACD, trend)
+3. Comprehensive scoring and ranking
+4. Return Top 10
 
-**输出结果**:
+**Output Result**:
 ```markdown
-# 智能选股结果 - A股科技板块
+# Smart Stock Selection Results - A-Share Technology Sector
 
-## 符合条件的股票 (共10只)
+## Qualified Stocks (Total: 10)
 
-### 1. 普元信息 (688118) ⭐⭐⭐⭐⭐
-**综合评分**: 92/100
+### 1. Primeton (688118) ⭐⭐⭐⭐⭐
+**Overall Score**: 92/100
 
-**技术面分析**:
-- 趋势: 强势上升趋势 📈
-- RSI(14): 65.3 (健康区间)
-- MACD: 金叉第3天，动能强劲
-- 成交量: 相对均量 2.1倍
-- 支撑位: ¥33.50
-- 阻力位: ¥37.80
+**Technical Analysis**:
+- Trend: Strong uptrend 📈
+- RSI(14): 65.3 (healthy range)
+- MACD: Golden cross day 3, strong momentum
+- Volume: 2.1x relative to average volume
+- Support: ¥33.50
+- Resistance: ¥37.80
 
-**基本面亮点**:
-- 市值: 32.3亿
-- PE: 28.5 (合理)
+**Fundamental Highlights**:
+- Market Cap: ¥3.23 billion
+- PE: 28.5 (reasonable)
 - ROE: 18.2%
-- 行业: 云计算/AI
+- Industry: Cloud Computing/AI
 
-**买入建议**: ✅ 强烈推荐
-- 建议买入价: ¥35.00-35.50
-- 目标价: ¥40.00
-- 止损价: ¥33.00
-- 仓位建议: 10-15%
+**Buy Recommendation**: ✅ Strongly Recommended
+- Suggested Entry: ¥35.00-35.50
+- Target Price: ¥40.00
+- Stop Loss: ¥33.00
+- Position Size: 10-15%
 ```
 
 ---
 
-## 案例 2: 形态识别 - BTC/USDT
+## Example 2: Pattern Recognition - BTC/USDT
 
-**用户请求**:
+**User Request**:
 ```
-"分析 BTC/USDT 的技术形态"
+"Analyze BTC/USDT technical patterns"
 ```
 
-**输出结果**:
+**Output Result**:
 ```markdown
-# BTC/USDT 技术形态分析
+# BTC/USDT Technical Pattern Analysis
 
-## 识别到的形态
+## Identified Patterns
 
-### 🔍 上升三角形 (置信度: 85%)
-- 上边界: $68,200
-- 下边界: 上升趋势线
-- 当前位置: 接近上边界
+### 🔍 Ascending Triangle (Confidence: 85%)
+- Upper Boundary: $68,200
+- Lower Boundary: Rising trendline
+- Current Position: Near upper boundary
 
-## 交易策略
+## Trading Strategy
 
-### 策略 A: 突破买入
-- 入场: 突破 $68,200
-- 目标: $72,000
-- 止损: $66,500
-- 风险收益比: 1:2.4
+### Strategy A: Breakout Buy
+- Entry: Breakout above $68,200
+- Target: $72,000
+- Stop Loss: $66,500
+- Risk-Reward Ratio: 1:2.4
 ```
 
 ---
 
-## 案例 3: 市场复盘
+## Example 3: Market Review
 
-**用户请求**:
+**User Request**:
 ```
-"生成今日A股市场复盘报告"
+"Generate today's A-share market review report"
 ```
 
-**输出结果**:
+**Output Result**:
 ```markdown
-# A股市场复盘 - 2026年3月1日
+# A-Share Market Review - March 1, 2026
 
-## 市场概览
-- 上证指数: 3,245.67 (+1.2%)
-- 涨跌比: 3,245 : 1,432 (2.27:1)
-- 成交额: 9,876亿 (+15%)
+## Market Overview
+- Shanghai Composite: 3,245.67 (+1.2%)
+- Advance/Decline Ratio: 3,245 : 1,432 (2.27:1)
+- Trading Volume: ¥987.6 billion (+15%)
 
-## 热点板块
-1. 云计算 (+3.2%) - 涨价周期
-2. 人工智能 (+2.8%) - 政策支持
-3. 新能源 (+1.5%) - 业绩改善
+## Hot Sectors
+1. Cloud Computing (+3.2%) - Price increase cycle
+2. Artificial Intelligence (+2.8%) - Policy support
+3. New Energy (+1.5%) - Earnings improvement
 ```

@@ -1,72 +1,72 @@
 ---
-description: 标的搜索工作流 - 快速搜索和发现交易标的
+description: Symbol search workflow - Quick search and discovery of trading instruments
 ---
 
-# 标的搜索工作流
+# Symbol Search Workflow
 
-快速搜索和发现股票、加密货币、外汇、期货等各类交易标的。
+Quickly search and discover trading instruments such as stocks, cryptocurrencies, forex, futures, etc.
 
-## 执行步骤
+## Execution Steps
 
-### 步骤 1: 解析搜索意图
+### Step 1: Parse Search Intent
 
-从用户输入中提取搜索关键词和筛选条件：
-- 关键词：股票名称、代码、拼音缩写等
-- 资产类型：股票、加密货币、外汇、期货、指数、基金、债券、期权
-- 语言偏好：中文或英文
+Extract search keywords and filter conditions from user input:
+- Keywords: Stock names, codes, pinyin abbreviations, etc.
+- Asset type: Stocks, cryptocurrencies, forex, futures, indices, funds, bonds, options
+- Language preference: Chinese or English
 
-### 步骤 2: 调用搜索工具
+### Step 2: Call Search Tool
 
-调用 `tradingview_search_market` 进行标的搜索：
+Call `tradingview_search_market` for instrument search:
 
 ```
-参数说明：
-- query: 搜索关键词（必填）
-- filter: 资产类型过滤（可选）
-  - stock: 股票
-  - crypto: 加密货币
-  - forex: 外汇
-  - futures: 期货
-  - index: 指数
-  - funds: 基金
-  - bond: 债券
-  - options: 期权
-- lang: 语言代码（默认 en）
-- limit: 返回数量（默认 20，最大 100）
+Parameter description:
+- query: Search keywords (required)
+- filter: Asset type filter (optional)
+  - stock: Stocks
+  - crypto: Cryptocurrency
+  - forex: Forex
+  - futures: Futures
+  - index: Indices
+  - funds: Funds
+  - bond: Bonds
+  - options: Options
+- lang: Language code (default en)
+- limit: Number of results (default 20, max 100)
 ```
 
-### 步骤 3: 格式化搜索结果
+### Step 3: Format Search Results
 
-将搜索结果整理为易读格式，包含：
-- 标的代码（如 NASDAQ:AAPL）
-- 交易所名称
-- 全称和描述
-- 资产类型
-- 货币代码
-- 所属国家
+Organize search results into readable format, including:
+- Instrument code (e.g., NASDAQ:AAPL)
+- Exchange name
+- Full name and description
+- Asset type
+- Currency code
+- Country
 
-### 步骤 4: 提供后续操作建议
+### Step 4: Provide Follow-up Action Suggestions
 
-根据搜索结果，建议用户可以进行的后续操作：
-- 查看实时行情：`tradingview_get_quote`
-- 查看技术分析：`tradingview_get_ta`
-- 查看历史K线：`tradingview_get_price`
-- 查看相关新闻：`tradingview_get_news`
+Based on search results, suggest subsequent operations users can perform:
+- View real-time quotes: `tradingview_get_quote`
+- View technical analysis: `tradingview_get_ta`
+- View historical K-lines: `tradingview_get_price`
+- View related news: `tradingview_get_news`
 
-## 示例对话
+## Example Conversations
 
-**用户**: "帮我搜索苹果公司的股票"
+**User**: "Help me search for Apple company's stock"
 
-**执行**:
-1. 调用 `tradingview_search_market`，query="AAPL"，filter="stock"
-2. 返回结果包含 NASDAQ:AAPL 等匹配项
-3. 建议用户可以查看实时行情或技术分析
+**Execution**:
+1. Call `tradingview_search_market`, query="AAPL", filter="stock"
+2. Return results including NASDAQ:AAPL and other matches
+3. Suggest user can view real-time quotes or technical analysis
 
 ---
 
-**用户**: "搜索比特币相关的交易对"
+**User**: "Search for Bitcoin-related trading pairs"
 
-**执行**:
-1. 调用 `tradingview_search_market`，query="BTC"，filter="crypto"
-2. 返回 BINANCE:BTCUSDT、COINBASE:BTCUSD 等交易对
-3. 建议用户选择具体交易对进行深度分析
+**Execution**:
+1. Call `tradingview_search_market`, query="BTC", filter="crypto"
+2. Return BINANCE:BTCUSDT, COINBASE:BTCUSD and other trading pairs
+3. Suggest user select specific trading pair for in-depth analysis

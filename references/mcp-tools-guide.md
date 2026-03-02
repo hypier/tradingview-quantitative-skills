@@ -1,191 +1,191 @@
-# MCP 工具使用指南
+# MCP Tools Usage Guide
 
-> 元数据优先规则、工具组合模式、各场景最佳实践
-
----
-
-## 元数据优先规则
-
-调用需要参数值的工具前，先通过 `tradingview_get_metadata` 获取可用值。完整元数据字典参见 `api-documentation.md`（搜索 `Market Codes`、`Asset Types and Tabs`）。
-
-### 何时必须调用 metadata
-
-| 场景 | 调用方式 | 获取的参数 |
-|------|---------|-----------|
-| 查询股票排行榜 | `get_metadata(type='markets')` | market_code（如 america, china） |
-| 查询任意排行榜 | `get_metadata(type='tabs', asset_type='stocks')` | tab（如 gainers, losers） |
-| 需要非 overview 数据 | `get_metadata(type='columnsets')` | columnset（如 valuation, dividends） |
-| 不确定有哪些交易所 | `get_metadata(type='exchanges')` | 353+ 交易所列表 |
-
-### 常用 market_code 速查
-
-无需每次调用 metadata，以下为常用值：
-
-- **北美**: america, canada
-- **欧洲**: uk, germany, france, switzerland, spain, italy
-- **亚洲**: china, hong-kong, japan, korea, india, taiwan, singapore
-- **其他**: australia, brazil
-
-### 常用 columnset 速查
-
-| columnset | 包含数据 | 适用场景 |
-|-----------|---------|---------|
-| overview | 价格、涨跌幅、市值、成交量 | 默认概览 |
-| performance | 1周/1月/3月/6月/1年/YTD收益率 | 业绩对比、板块轮动 |
-| valuation | PE、PB、PS、EV/EBITDA | 估值筛选 |
-| dividends | 股息率、派息比率、除息日 | 高股息策略 |
-| profitability | ROE、ROA、毛利率、净利率 | 盈利能力筛选 |
-| income_statement | 营收、净利润、EPS | 财务分析 |
-| balance_sheet | 总资产、负债率、流动比率 | 财务健康度 |
-| cash_flow | 经营/投资/筹资现金流 | 现金流分析 |
-| technical | RSI、Beta、SMA、ATR | 技术面概览 |
+> Metadata-first rules, tool combination patterns, best practices for various scenarios
 
 ---
 
-## 工具组合模式
+## Metadata-First Rules
 
-### 模式 1: 个股深度分析
+Before calling tools that require parameter values, first get available values through `tradingview_get_metadata`. For complete metadata dictionary, see `api-documentation.md` (search for `Market Codes`, `Asset Types and Tabs`).
 
-```
-1. search_market(query="公司名") → 获取准确 symbol
-2. get_quote(symbol) → 实时价格、涨跌、成交量
-3. get_price(symbol, timeframe='D', range=120) → 日K线数据
-4. get_ta(symbol, include_indicators=true) → 详细技术指标
-5. get_news(symbol=symbol, lang='zh-Hans') → 相关新闻
-6. get_calendar(type='earnings', from/to) → 近期财报日期
-```
+### When to Call Metadata
 
-### 模式 2: 智能选股（技术面 + 基本面）
+| Scenario | Call Method | Parameters Obtained |
+|----------|------------|-------------------|
+| Query stock leaderboard | `get_metadata(type='markets')` | market_code (e.g., america, china) |
+| Query any leaderboard | `get_metadata(type='tabs', asset_type='stocks')` | tab (e.g., gainers, losers) |
+| Need non-overview data | `get_metadata(type='columnsets')` | columnset (e.g., valuation, dividends) |
+| Unsure about exchanges | `get_metadata(type='exchanges')` | 353+ exchange list |
 
-```
-1. get_metadata(type='markets') → 确认 market_code
-2. get_metadata(type='tabs', asset_type='stocks') → 确认 tab
-3. get_leaderboard(asset_type='stocks', tab='gainers', market_code, columnset='overview') → 候选池
-4. get_leaderboard(同上, columnset='valuation') → 估值数据
-5. get_leaderboard(同上, columnset='profitability') → 盈利数据
-6. 对 Top 候选: get_ta(symbol, include_indicators=true) → 技术面验证
-7. 对 Top 候选: get_price(symbol, timeframe='D', range=60) → K线验证
-```
+### Common market_code Quick Reference
 
-### 模式 3: 多时间框架趋势确认
+No need to call metadata every time, here are common values:
 
-```
-1. get_price(symbol, timeframe='M', range=24) → 月线趋势
-2. get_price(symbol, timeframe='W', range=52) → 周线趋势
-3. get_price(symbol, timeframe='D', range=120) → 日线趋势
-4. get_price(symbol, timeframe='60', range=100) → 60分钟线细节
-5. get_ta(symbol, include_indicators=true) → 多周期TA信号
-```
+- **North America**: america, canada
+- **Europe**: uk, germany, france, switzerland, spain, italy
+- **Asia**: china, hong-kong, japan, korea, india, taiwan, singapore
+- **Others**: australia, brazil
 
-信号一致性：月线/周线/日线趋势方向一致 → 高置信度
+### Common columnset Quick Reference
 
-### 模式 4: 板块轮动分析
+| columnset | Data Included | Use Cases |
+|-----------|--------------|-----------|
+| overview | Price, change percentage, market cap, volume | Default overview |
+| performance | 1W/1M/3M/6M/1Y/YTD returns | Performance comparison, sector rotation |
+| valuation | PE, PB, PS, EV/EBITDA | Valuation screening |
+| dividends | Dividend yield, payout ratio, ex-dividend date | High dividend strategy |
+| profitability | ROE, ROA, gross margin, net margin | Profitability screening |
+| income_statement | Revenue, net profit, EPS | Financial analysis |
+| balance_sheet | Total assets, debt ratio, current ratio | Financial health |
+| cash_flow | Operating/investing/financing cash flow | Cash flow analysis |
+| technical | RSI, Beta, SMA, ATR | Technical overview |
 
-```
-1. get_metadata(type='tabs', asset_type='stocks') → 获取所有tab
-2. get_leaderboard(tab='best-performing', columnset='performance') → 各板块业绩
-3. 对比不同 tab 的 performance columnset 数据
-4. get_news(market='stock', market_country='CN') → 新闻确认热点
-```
+---
 
-### 模式 5: 基本面筛选
+## Tool Combination Patterns
+
+### Pattern 1: Deep Individual Stock Analysis
 
 ```
-1. get_leaderboard(tab='high-dividend', columnset='dividends') → 高股息
-2. get_leaderboard(tab='all-stocks', columnset='valuation') → 低估值
-3. get_leaderboard(tab='all-stocks', columnset='profitability') → 高ROE
-4. 交叉筛选以上结果 → 价值股候选
+1. search_market(query="company name") → Get accurate symbol
+2. get_quote(symbol) → Real-time price, change, volume
+3. get_price(symbol, timeframe='D', range=120) → Daily K-line data
+4. get_ta(symbol, include_indicators=true) → Detailed technical indicators
+5. get_news(symbol=symbol, lang='zh-Hans') → Related news
+6. get_calendar(type='earnings', from/to) → Recent earnings dates
 ```
 
-### 模式 6: 市场复盘
+### Pattern 2: Smart Stock Screening (Technical + Fundamental)
 
 ```
-1. get_leaderboard(tab='gainers', market_code, count=50) → 涨幅榜
-2. get_leaderboard(tab='losers', market_code, count=50) → 跌幅榜
-3. get_leaderboard(tab='active', market_code) → 活跃股
-4. get_leaderboard(tab='unusual-volume', market_code) → 异常放量
-5. get_news(market_country='CN', lang='zh-Hans', limit=10) → 新闻
-6. 对每条新闻: get_news_detail(news_id) → 完整内容
+1. get_metadata(type='markets') → Confirm market_code
+2. get_metadata(type='tabs', asset_type='stocks') → Confirm tab
+3. get_leaderboard(asset_type='stocks', tab='gainers', market_code, columnset='overview') → Candidate pool
+4. get_leaderboard(same, columnset='valuation') → Valuation data
+5. get_leaderboard(same, columnset='profitability') → Profitability data
+6. For Top candidates: get_ta(symbol, include_indicators=true) → Technical verification
+7. For Top candidates: get_price(symbol, timeframe='D', range=60) → K-line verification
+```
+
+### Pattern 3: Multi-Timeframe Trend Confirmation
+
+```
+1. get_price(symbol, timeframe='M', range=24) → Monthly trend
+2. get_price(symbol, timeframe='W', range=52) → Weekly trend
+3. get_price(symbol, timeframe='D', range=120) → Daily trend
+4. get_price(symbol, timeframe='60', range=100) → 60-minute details
+5. get_ta(symbol, include_indicators=true) → Multi-period TA signals
+```
+
+Signal consistency: Monthly/weekly/daily trend direction consistent → High confidence
+
+### Pattern 4: Sector Rotation Analysis
+
+```
+1. get_metadata(type='tabs', asset_type='stocks') → Get all tabs
+2. get_leaderboard(tab='best-performing', columnset='performance') → Sector performance
+3. Compare performance columnset data from different tabs
+4. get_news(market='stock', market_country='CN') → News confirm hotspots
+```
+
+### Pattern 5: Fundamental Screening
+
+```
+1. get_leaderboard(tab='high-dividend', columnset='dividends') → High dividend
+2. get_leaderboard(tab='all-stocks', columnset='valuation') → Low valuation
+3. get_leaderboard(tab='all-stocks', columnset='profitability') → High ROE
+4. Cross-filter above results → Value stock candidates
+```
+
+### Pattern 6: Market Review
+
+```
+1. get_leaderboard(tab='gainers', market_code, count=50) → Gainers
+2. get_leaderboard(tab='losers', market_code, count=50) → Losers
+3. get_leaderboard(tab='active', market_code) → Active stocks
+4. get_leaderboard(tab='unusual-volume', market_code) → Unusual volume
+5. get_news(market_country='CN', lang='zh-Hans', limit=10) → News
+6. For each news: get_news_detail(news_id) → Full content
 ```
 
 ---
 
-## 关键参数说明
+## Key Parameter Description
 
-### get_price 时间框架选择
+### get_price Timeframe Selection
 
-| timeframe | 含义 | 典型 range | 适用场景 |
-|-----------|------|-----------|---------|
-| 1 | 1分钟 | 60-240 | 日内交易 |
-| 5 | 5分钟 | 48-120 | 短线分析 |
-| 15 | 15分钟 | 48-96 | 短线分析 |
-| 60 | 1小时 | 48-168 | 波段分析 |
-| 240 | 4小时 | 30-90 | 波段分析 |
-| D | 日线 | 60-250 | 中期分析 |
-| W | 周线 | 52-104 | 中长期分析 |
-| M | 月线 | 24-60 | 长期趋势 |
+| timeframe | Meaning | Typical range | Use Cases |
+|-----------|---------|--------------|-----------|
+| 1 | 1 minute | 60-240 | Intraday trading |
+| 5 | 5 minutes | 48-120 | Short-term analysis |
+| 15 | 15 minutes | 48-96 | Short-term analysis |
+| 60 | 1 hour | 48-168 | Swing analysis |
+| 240 | 4 hours | 30-90 | Swing analysis |
+| D | Daily | 60-250 | Medium-term analysis |
+| W | Weekly | 52-104 | Medium-long term analysis |
+| M | Monthly | 24-60 | Long-term trend |
 
-### get_price 图表类型
+### get_price Chart Types
 
-- 默认：标准K线
-- `type='HeikinAshi'`：平均K线，过滤噪音，更清晰显示趋势方向
+- Default: Standard K-line
+- `type='HeikinAshi'`: Heikin-Ashi, filters noise, clearer trend direction
 
-### get_ta include_indicators 返回字段
+### get_ta include_indicators Return Fields
 
-设置 `include_indicators=true` 返回的关键字段：
+Key fields returned when setting `include_indicators=true`:
 
-- **RSI(14)**: 相对强弱指标（>70超买, <30超卖）
-- **MACD**: 趋势动量（DIF, DEA, 柱状图）
-- **Stoch**: 随机指标（K, D值）
-- **CCI(20)**: 商品通道指标
-- **ADX(14)**: 趋势强度（>25有趋势, >50强趋势）
-- **SMA/EMA**: 简单/指数移动平均线
-- **Pivot Points**: 枢轴点（支撑/阻力位）
+- **RSI(14)**: Relative Strength Index (>70 overbought, <30 oversold)
+- **MACD**: Trend momentum (DIF, DEA, histogram)
+- **Stoch**: Stochastic Oscillator (K, D values)
+- **CCI(20)**: Commodity Channel Index
+- **ADX(14)**: Trend Strength (>25 trending, >50 strong trend)
+- **SMA/EMA**: Simple/Exponential Moving Average
+- **Pivot Points**: Pivot points (support/resistance levels)
 
-### get_news 语言代码
+### get_news Language Codes
 
-| 市场 | lang | market_country |
-|------|------|---------------|
-| 中国 | zh-Hans | CN |
-| 美国 | en | US |
-| 日本 | ja | JP |
-| 香港 | zh-Hans 或 en | HK |
-| 韩国 | ko | KR |
+| Market | lang | market_country |
+|---------|------|----------------|
+| China | zh-Hans | CN |
+| United States | en | US |
+| Japan | ja | JP |
+| Hong Kong | zh-Hans or en | HK |
+| South Korea | ko | KR |
 
-### get_calendar 时间戳
+### get_calendar Timestamps
 
-日历查询需要 Unix 时间戳（秒），时间跨度不超过 40 天：
+Calendar queries require Unix timestamps (seconds), time span not exceeding 40 days:
 
 ```javascript
-// 当前时间
+// Current time
 const now = Math.floor(Date.now() / 1000);
-// 未来7天
+// 7 days later
 const weekLater = now + 7 * 24 * 60 * 60;
-// 未来14天
+// 14 days later
 const twoWeeksLater = now + 14 * 24 * 60 * 60;
 ```
 
 ---
 
-## 多资产类型支持
+## Multi-Asset Type Support
 
-MCP 支持 8 种资产类型，每种有不同的 tabs 和 columnsets：
+MCP supports 8 asset types, each with different tabs and columnsets:
 
-| 资产类型 | asset_type | tabs数 | columnsets | 需要 market_code |
-|---------|-----------|--------|-----------|-----------------|
-| 股票 | stocks | 25 | 9种（含基本面） | 是 |
-| 指数 | indices | 11 | 3种 | 否 |
-| 加密货币 | crypto | 20 | 3种 | 否 |
-| 期货 | futures | 7 | 2种 | 否 |
-| 外汇 | forex | 10 | 3种 | 否 |
-| 政府债券 | bonds | 17 | 2种 | 否 |
-| 企业债券 | corporate_bonds | 6 | 1种 | 否 |
-| ETF/基金 | etfs | 40 | 3种 | 否 |
+| Asset Type | asset_type | Tabs Count | Columnsets | Requires market_code |
+|------------|-----------|------------|------------|-------------------|
+| Stocks | stocks | 25 | 9 types (including fundamentals) | Yes |
+| Indices | indices | 11 | 3 types | No |
+| Cryptocurrency | crypto | 20 | 3 types | No |
+| Futures | futures | 7 | 2 types | No |
+| Forex | forex | 10 | 3 types | No |
+| Government Bonds | bonds | 17 | 2 types | No |
+| Corporate Bonds | corporate_bonds | 6 | 1 type | No |
+| ETF/Funds | etfs | 40 | 3 types | No |
 
-### 加密货币特有 tabs
+### Crypto-Specific Tabs
 
-DeFi、TVL排名、地址数、交易量、供应量等 → 使用 `get_metadata(type='tabs', asset_type='crypto')` 查看完整列表。
+DeFi, TVL ranking, address count, volume, supply, etc. → Use `get_metadata(type='tabs', asset_type='crypto')` to see complete list.
 
-### ETF 特有 tabs
+### ETF-Specific Tabs
 
-按策略：bitcoin, gold, fixed-income, leveraged, inverse, sector 等 40 个分类。
+By strategy: bitcoin, gold, fixed-income, leveraged, inverse, sector, etc. 40 categories.

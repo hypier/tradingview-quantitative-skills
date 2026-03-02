@@ -1,120 +1,120 @@
 ---
-description: 板块轮动分析工作流 - 识别强势板块和轮动趋势
+description: Sector rotation analysis workflow - Identify strong sectors and rotation trends
 ---
 
-# 板块轮动分析工作流
+# Sector Rotation Analysis Workflow
 
-通过 `tradingview_get_leaderboard` 的 performance columnset 和多种 tab，识别当前强势板块、分析轮动趋势、发现投资机会。
+Through `tradingview_get_leaderboard`'s performance columnset and various tabs, identify current strong sectors, analyze rotation trends, and discover investment opportunities.
 
-## 执行步骤
+## Execution Steps
 
-### 步骤 1: 获取元数据
-
-```
-tradingview_get_metadata(type='markets')   # 确认 market_code
-tradingview_get_metadata(type='tabs', asset_type='stocks')  # 查看所有分类 tab
-```
-
-### 步骤 2: 获取板块涨跌榜（performance columnset）
+### Step 1: Get Metadata
 
 ```
-# 涨幅榜 - performance 数据（1周/1月/3月/6月/1年收益率）
+tradingview_get_metadata(type='markets')   # Confirm market_code
+tradingview_get_metadata(type='tabs', asset_type='stocks')  # View all category tabs
+```
+
+### Step 2: Get Sector Performance Rankings (performance columnset)
+
+```
+# Gainers - performance data (1W/1M/3M/6M/1Y returns)
 tradingview_get_leaderboard(
   asset_type='stocks', tab='best-performing',
   market_code='china', columnset='performance', count=50
 )
 
-# 跌幅榜
+# Losers
 tradingview_get_leaderboard(
   asset_type='stocks', tab='losers',
   market_code='china', columnset='performance', count=50
 )
 
-# 活跃股
+# Active stocks
 tradingview_get_leaderboard(
   asset_type='stocks', tab='active',
   market_code='china', columnset='overview', count=50
 )
 
-# 异常放量
+# Unusual volume
 tradingview_get_leaderboard(
   asset_type='stocks', tab='unusual-volume',
   market_code='china', columnset='overview', count=50
 )
 ```
 
-### 步骤 3: 板块归类分析
+### Step 3: Sector Classification Analysis
 
-将涨幅榜股票按行业/板块归类，统计：
-- 各板块在涨幅榜中的占比
-- 各板块平均涨幅（1周/1月/3月维度）
-- 板块内龙头股识别
+Classify gainer stocks by industry/sector, calculate:
+- Percentage of each sector in gainers
+- Average gains of each sector (1W/1M/3M dimensions)
+- Sector leader identification
 
-### 步骤 4: 板块强度排名
+### Step 4: Sector Strength Ranking
 
-通过 performance 数据对比各板块的多周期收益率：
+Compare multi-period returns of various sectors through performance data:
 
-| 板块 | 1周 | 1月 | 3月 | 6月 | 趋势判断 |
-|------|-----|-----|-----|-----|---------|
-| ... | ... | ... | ... | ... | 加速/减速/反转 |
+| Sector | 1W | 1M | 3M | 6M | Trend Judgment |
+|--------|----|----|----|----|---------------|
+| ... | ... | ... | ... | ... | Acceleration/Deceleration/Reversal |
 
-判断逻辑：
-- **加速上涨**: 短期 > 中期 > 长期收益率
-- **减速上涨**: 长期 > 中期 > 短期收益率
-- **反转向上**: 短期正、长期负
-- **反转向下**: 短期负、长期正
+Judgment logic:
+- **Accelerating up**: Short-term > medium-term > long-term returns
+- **Decelerating up**: Long-term > medium-term > short-term returns
+- **Reversal up**: Short-term positive, long-term negative
+- **Reversal down**: Short-term negative, long-term positive
 
-### 步骤 5: 结合新闻确认
+### Step 5: Confirm with News
 
 ```
 tradingview_get_news(market='stock', market_country='CN', lang='zh-Hans', limit=10)
 ```
 
-对新闻进行板块关联分析，确认板块强势是否有基本面/政策面支撑。
+Analyze news for sector associations, confirm if sector strength has fundamental/policy support.
 
-### 步骤 6: 龙头股技术验证
+### Step 6: Sector Leader Technical Verification
 
-对每个强势板块的龙头股（1-2只）：
+For 1-2 leader stocks of each strong sector:
 
 ```
 tradingview_get_ta(symbol, include_indicators=true)
 ```
 
-确认龙头股技术面是否支持板块趋势持续。
+Confirm if sector leader technicals support continued sector trend.
 
-### 步骤 7: 生成板块轮动报告
+### Step 7: Generate Sector Rotation Report
 
 ```markdown
-# 板块轮动分析报告
+# Sector Rotation Analysis Report
 
-## 当前强势板块（按强度排名）
-| 排名 | 板块 | 1周涨幅 | 1月涨幅 | 趋势阶段 | 龙头股 |
-|------|------|---------|---------|---------|-------|
+## Current Strong Sectors (Ranked by Strength)
+| Rank | Sector | 1W Gain | 1M Gain | Trend Stage | Leader Stock |
+|------|--------|---------|---------|------------|-------------|
 
-## 弱势板块
-| 排名 | 板块 | 1周跌幅 | 趋势阶段 | 是否超跌 |
-|------|------|---------|---------|---------|
+## Weak Sectors
+| Rank | Sector | 1W Loss | Trend Stage | Oversold? |
+|------|--------|---------|------------|-----------|
 
-## 轮动趋势判断
-- 当前市场风格: [价值/成长/周期/防御]
-- 资金流向: [从XX板块流向XX板块]
-- 轮动阶段: [早期/中期/晚期]
+## Rotation Trend Judgment
+- Current market style: [Value/Growth/Cyclical/Defensive]
+- Capital flow: [From XX sector to XX sector]
+- Rotation stage: [Early/Middle/Late]
 
-## 投资建议
-- 建议关注板块: ...
-- 建议回避板块: ...
-- 龙头股推荐: ...
+## Investment Recommendations
+- Recommended sectors: ...
+- Avoid sectors: ...
+- Leader stock recommendations: ...
 ```
 
-## ETF/指数板块分析
+## ETF/Index Sector Analysis
 
-也可使用指数和 ETF 数据做板块分析：
+Can also use index and ETF data for sector analysis:
 
 ```
-# 行业指数对比
+# Industry index comparison
 tradingview_get_leaderboard(asset_type='indices', tab='all', columnset='performance')
 
-# ETF 板块对比
+# ETF sector comparison
 tradingview_get_leaderboard(asset_type='etfs', tab='sector-etfs', columnset='performance')
 tradingview_get_leaderboard(asset_type='etfs', tab='highest-returns', columnset='performance')
 ```

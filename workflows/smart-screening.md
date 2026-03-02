@@ -1,115 +1,115 @@
 ---
-description: 智能选股工作流 - 基于多因子模型筛选优质标的
+description: Smart stock screening workflow - Filter quality targets based on multi-factor model
 ---
 
-# 智能选股工作流
+# Smart Stock Screening Workflow
 
-基于多因子模型，从市场中筛选出符合技术面和基本面条件的优质标的，提供综合评分和买入建议。
+Based on multi-factor model, filter quality targets from the market that meet technical and fundamental conditions, providing comprehensive scoring and buy recommendations.
 
-## 执行步骤
+## Execution Steps
 
-### 步骤 1: 理解筛选条件
+### Step 1: Understand Screening Criteria
 
-从用户输入中提取：
-- **市场范围**: 国家/地区（确定 market_code）、资产类型
-- **技术面条件**: 趋势方向、RSI 区间、MACD 状态、成交量
-- **基本面条件**: PE、PB、ROE、市值、股息率等
-- **排序偏好**: 涨幅、市值、成交量等
+Extract from user input:
+- **Market scope**: Country/region (determine market_code), asset type
+- **Technical conditions**: Trend direction, RSI range, MACD status, volume
+- **Fundamental conditions**: PE, PB, ROE, market cap, dividend yield, etc.
+- **Sorting preference**: Change percentage, market cap, volume, etc.
 
-### 步骤 2: 获取元数据（元数据优先）
-
-```
-tradingview_get_metadata(type='markets')  # 获取 market_code
-tradingview_get_metadata(type='tabs', asset_type='stocks')  # 获取可用 tab
-```
-
-### 步骤 3: 获取候选池
-
-根据筛选方向选择合适的 tab 和 columnset：
+### Step 2: Get Metadata (Metadata First)
 
 ```
-# 技术面选股 - 使用技术面相关 tab
+tradingview_get_metadata(type='markets')  # Get market_code
+tradingview_get_metadata(type='tabs', asset_type='stocks')  # Get available tabs
+```
+
+### Step 3: Get Candidate Pool
+
+Choose appropriate tab and columnset based on screening direction:
+
+```
+# Technical screening - Use technical-related tabs
 tradingview_get_leaderboard(
-  asset_type='stocks', tab='gainers',  # 或 active/unusual-volume/best-performing
+  asset_type='stocks', tab='gainers',  # or active/unusual-volume/best-performing
   market_code='china', columnset='overview', count=100
 )
 
-# 基本面数据 - 切换 columnset
+# Fundamental data - Switch columnset
 tradingview_get_leaderboard(
   asset_type='stocks', tab='all-stocks',
   market_code='china', columnset='valuation', count=100
 )
 
-# 盈利能力
+# Profitability
 tradingview_get_leaderboard(
   asset_type='stocks', tab='all-stocks',
   market_code='china', columnset='profitability', count=100
 )
 ```
 
-### 步骤 4: 技术面筛选
+### Step 4: Technical Screening
 
-对候选池中的 Top 20-30 只，逐个调用：
+For Top 20-30 in candidate pool, call individually:
 
 ```
 tradingview_get_ta(symbol, include_indicators=true)
 ```
 
-筛选条件（参见 `references/technical-analysis.md` 评分模型）：
-- TA 多周期信号为 Buy
-- RSI 在 30-70 健康区间
-- MACD 金叉或 DIF > 0
-- ADX > 25（存在趋势）
+Screening criteria (see `references/technical-analysis.md` scoring model):
+- TA multi-timeframe signal is Buy
+- RSI in healthy range 30-70
+- MACD golden cross or DIF > 0
+- ADX > 25 (trend exists)
 
-### 步骤 5: K线数据验证
+### Step 5: K-line Data Verification
 
-对通过技术面筛选的 Top 10，获取K线确认：
+For Top 10 that pass technical screening, get K-line confirmation:
 
 ```
 tradingview_get_price(symbol, timeframe='D', range=60)
 ```
 
-验证：
-- 均线排列（多头/空头）
-- 成交量配合（放量上涨）
-- 距支撑位距离
+Verify:
+- Moving average arrangement (bullish/bearish)
+- Volume coordination (volume increase on rise)
+- Distance from support level
 
-### 步骤 6: 综合评分排序
+### Step 6: Comprehensive Scoring and Ranking
 
-按 `references/technical-analysis.md` 的评分模型计算总分（100分制）：
-- 趋势强度 30分
-- 动量指标 25分
-- 形态识别 20分
-- 支撑阻力 15分
-- 市场情绪 10分
+Calculate total score (100-point system) according to `references/technical-analysis.md` scoring model:
+- Trend strength 30 points
+- Momentum indicators 25 points
+- Pattern recognition 20 points
+- Support resistance 15 points
+- Market sentiment 10 points
 
-### 步骤 7: 生成详细报告
+### Step 7: Generate Detailed Report
 
 ```markdown
-# 智能选股结果 - [市场/板块]
+# Smart Stock Screening Results - [Market/Sector]
 
-## 筛选条件
-- [列出技术面和基本面条件]
+## Screening Criteria
+- [List technical and fundamental conditions]
 
-## 符合条件的股票（共 N 只）
+## Qualified Stocks (Total N stocks)
 
-### 1. [股票名称] (代码) ⭐⭐⭐⭐⭐
-**综合评分**: XX/100
-- 技术面: RSI=XX, MACD=XX, 趋势=XX
-- 基本面: PE=XX, ROE=XX%
-- 买入建议: ¥XX-XX
-- 止损位: ¥XX
-- 目标价: ¥XX
+### 1. [Stock Name] (Code) ⭐⭐⭐⭐⭐
+**Comprehensive Score**: XX/100
+- Technical: RSI=XX, MACD=XX, Trend=XX
+- Fundamental: PE=XX, ROE=XX%
+- Buy Recommendation: ¥XX-XX
+- Stop Loss: ¥XX
+- Target Price: ¥XX
 ```
 
-## 示例
+## Example
 
-**用户**: "帮我从A股中筛选强势股"
+**User**: "Help me select strong stocks from China A-shares"
 
-**执行**:
+**Execution**:
 1. `get_metadata(type='markets')` → china
-2. `get_leaderboard(tab='gainers', market_code='china', count=100)` → 涨幅榜
-3. `get_leaderboard(tab='gainers', market_code='china', columnset='valuation')` → 估值
-4. Top 20 逐个 `get_ta(include_indicators=true)` → 技术筛选
-5. Top 10 `get_price(timeframe='D', range=60)` → K线验证
-6. 综合评分 → 输出 Top 10 报告
+2. `get_leaderboard(tab='gainers', market_code='china', count=100)` → Gainers
+3. `get_leaderboard(tab='gainers', market_code='china', columnset='valuation')` → Valuation
+4. Top 20 individual `get_ta(include_indicators=true)` → Technical screening
+5. Top 10 `get_price(timeframe='D', range=60)` → K-line verification
+6. Comprehensive scoring → Output Top 10 report

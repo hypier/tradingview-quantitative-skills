@@ -1,348 +1,348 @@
-# 技术分析方法论
+# Technical Analysis Methodology
 
-> 专业的技术分析评分模型和指标解读
-
----
-
-## 📊 综合评分模型
-
-### 总分构成 (100分)
-
-```
-总分 = 趋势强度(30分) + 动量指标(25分) + 形态识别(20分) + 
-       支撑阻力(15分) + 市场情绪(10分)
-```
-
-### 评级标准
-
-| 分数区间 | 评级 | 建议 |
-|---------|------|------|
-| 90-100 | ⭐⭐⭐⭐⭐ | 强烈推荐 |
-| 80-89 | ⭐⭐⭐⭐ | 推荐 |
-| 70-79 | ⭐⭐⭐ | 中性观望 |
-| 60-69 | ⭐⭐ | 谨慎 |
-| < 60 | ⭐ | 不推荐 |
+> Professional technical analysis scoring model and indicator interpretation
 
 ---
 
-## 1️⃣ 趋势强度分析 (30分)
+## 📊 Comprehensive Scoring Model
 
-### 1.1 多周期均线排列 (0-15分)
+### Total Score Composition (100 points)
 
-#### 完美多头排列 (15分)
 ```
-5日均线 > 10日均线 > 20日均线 > 60日均线
+Total Score = Trend Strength(30 points) + Momentum Indicators(25 points) + Pattern Recognition(20 points) + 
+              Support Resistance(15 points) + Market Sentiment(10 points)
 ```
 
-#### 评分标准
-- 5日 > 10日 > 20日 > 60日: **15分** (完美多头)
-- 5日 > 10日 > 20日: **12分** (强势多头)
-- 5日 > 10日: **8分** (短期多头)
-- 均线粘合: **5分** (方向不明)
-- 空头排列: **0分** (趋势向下)
+### Rating Standards
 
-### 1.2 价格相对位置 (0-10分)
-
-#### 评分标准
-- 价格 > 所有均线: **10分** (强势)
-- 价格 > 60日均线: **8分** (中期强势)
-- 价格 > 20日均线: **5分** (短期强势)
-- 价格 < 所有均线: **0分** (弱势)
-
-### 1.3 趋势持续时间 (0-5分)
-
-#### 评分标准
-- 持续 > 30天: **5分** (趋势成熟)
-- 持续 20-30天: **4分** (趋势确立)
-- 持续 10-20天: **3分** (趋势初期)
-- 持续 < 10天: **1分** (趋势不稳)
+| Score Range | Rating | Recommendation |
+|------------|--------|---------------|
+| 90-100 | ⭐⭐⭐⭐⭐ | Strongly Recommend |
+| 80-89 | ⭐⭐⭐⭐ | Recommend |
+| 70-79 | ⭐⭐⭐ | Neutral Watch |
+| 60-69 | ⭐⭐ | Cautious |
+| < 60 | ⭐ | Not Recommend |
 
 ---
 
-## 2️⃣ 动量指标分析 (25分)
+## 1️⃣ Trend Strength Analysis (30 points)
 
-### 2.1 RSI 相对强弱指数 (0-10分)
+### 1.1 Multi-Timeframe Moving Average Arrangement (0-15 points)
 
-#### 健康度评分
-- RSI 在 40-60: **10分** (最健康)
-- RSI 在 30-40 或 60-70: **8分** (健康)
-- RSI 在 20-30 或 70-80: **5分** (警戒)
-- RSI < 20 或 > 80: **2分** (超买超卖)
-
-#### 交易信号
+#### Perfect Bullish Arrangement (15 points)
 ```
-买入信号:
-- RSI 从下向上突破 30
-- RSI 底背离（价格创新低，RSI 不创新低）
-
-卖出信号:
-- RSI 从上向下跌破 70
-- RSI 顶背离（价格创新高，RSI 不创新高）
+5-day MA > 10-day MA > 20-day MA > 60-day MA
 ```
 
-### 2.2 MACD 指标 (0-10分)
+#### Scoring Criteria
+- 5-day > 10-day > 20-day > 60-day: **15 points** (Perfect bullish)
+- 5-day > 10-day > 20-day: **12 points** (Strong bullish)
+- 5-day > 10-day: **8 points** (Short-term bullish)
+- Moving averages converging: **5 points** (Direction unclear)
+- Bearish arrangement: **0 points** (Downward trend)
 
-#### 状态评分
-- 金叉 + DIF > 0 + 柱状图放大: **10分** (强势买入)
-- 金叉 + DIF < 0: **8分** (买入信号)
-- 金叉 + 柱状图缩小: **6分** (动能减弱)
-- 死叉 + DIF > 0: **3分** (警惕)
-- 死叉 + DIF < 0: **0分** (卖出信号)
+### 1.2 Price Relative Position (0-10 points)
 
-#### 交易信号
+#### Scoring Criteria
+- Price > all moving averages: **10 points** (Strong)
+- Price > 60-day MA: **8 points** (Medium-term strong)
+- Price > 20-day MA: **5 points** (Short-term strong)
+- Price < all moving averages: **0 points** (Weak)
+
+### 1.3 Trend Duration (0-5 points)
+
+#### Scoring Criteria
+- Duration > 30 days: **5 points** (Mature trend)
+- Duration 20-30 days: **4 points** (Established trend)
+- Duration 10-20 days: **3 points** (Early trend)
+- Duration < 10 days: **1 point** (Unstable trend)
+
+---
+
+## 2️⃣ Momentum Indicators Analysis (25 points)
+
+### 2.1 RSI Relative Strength Index (0-10 points)
+
+#### Health Scoring
+- RSI in 40-60: **10 points** (Most healthy)
+- RSI in 30-40 or 60-70: **8 points** (Healthy)
+- RSI in 20-30 or 70-80: **5 points** (Caution)
+- RSI < 20 or > 80: **2 points** (Overbought/oversold)
+
+#### Trading Signals
 ```
-强烈买入:
-- MACD 在 0 轴上方金叉
-- 柱状图快速放大
+Buy Signals:
+- RSI breaks above 30 from below
+- RSI bottom divergence (price makes new low, RSI doesn't make new low)
 
-买入:
-- MACD 在 0 轴下方金叉
-- 底背离
-
-卖出:
-- MACD 在 0 轴下方死叉
-- 顶背离
+Sell Signals:
+- RSI breaks below 70 from above
+- RSI top divergence (price makes new high, RSI doesn't make new high)
 ```
 
-### 2.3 成交量配合 (0-5分)
+### 2.2 MACD Indicator (0-10 points)
 
-#### 量价关系评分
-- 上涨 + 放量: **5分** (健康上涨)
-- 上涨 + 缩量: **3分** (动能不足)
-- 下跌 + 缩量: **2分** (抛压减轻)
-- 下跌 + 放量: **0分** (恐慌性下跌)
+#### Status Scoring
+- Golden cross + DIF > 0 + histogram expanding: **10 points** (Strong buy)
+- Golden cross + DIF < 0: **8 points** (Buy signal)
+- Golden cross + histogram contracting: **6 points** (Momentum weakening)
+- Death cross + DIF > 0: **3 points** (Caution)
+- Death cross + DIF < 0: **0 points** (Sell signal)
 
-#### 相对成交量
+#### Trading Signals
 ```
-放量: 当日成交量 > 5日均量 × 1.5
-缩量: 当日成交量 < 5日均量 × 0.7
+Strong Buy:
+- MACD golden cross above 0 axis
+- Histogram rapidly expanding
+
+Buy:
+- MACD golden cross below 0 axis
+- Bottom divergence
+
+Sell:
+- MACD death cross below 0 axis
+- Top divergence
+```
+
+### 2.3 Volume Coordination (0-5 points)
+
+#### Volume-Price Relationship Scoring
+- Rise + volume increase: **5 points** (Healthy rise)
+- Rise + volume decrease: **3 points** (Insufficient momentum)
+- Fall + volume decrease: **2 points** (Selling pressure easing)
+- Fall + volume increase: **0 points** (Panic selling)
+
+#### Relative Volume
+```
+Volume increase: Daily volume > 5-day average × 1.5
+Volume decrease: Daily volume < 5-day average × 0.7
 ```
 
 ---
 
-## 3️⃣ 形态识别 (20分)
+## 3️⃣ Pattern Recognition (20 points)
 
-### 3.1 经典形态 (0-15分)
+### 3.1 Classic Patterns (0-15 points)
 
-#### 反转形态
-- **双底/双顶**: 置信度 > 85% → 15分
-- **头肩底/头肩顶**: 置信度 > 80% → 12分
-- **圆弧底/圆弧顶**: 置信度 > 75% → 10分
+#### Reversal Patterns
+- **Double bottom/double top**: Confidence > 85% → 15 points
+- **Head and shoulders bottom/top**: Confidence > 80% → 12 points
+- **Rounding bottom/top**: Confidence > 75% → 10 points
 
-#### 整理形态
-- **上升三角形**: 置信度 > 80% → 12分
-- **旗形整理**: 置信度 > 75% → 10分
-- **矩形整理**: 置信度 > 70% → 8分
+#### Consolidation Patterns
+- **Ascending triangle**: Confidence > 80% → 12 points
+- **Flag consolidation**: Confidence > 75% → 10 points
+- **Rectangle consolidation**: Confidence > 70% → 8 points
 
-### 3.2 K线形态 (0-5分)
+### 3.2 Candlestick Patterns (0-5 points)
 
-#### 看涨形态
-- **锤子线**: 出现在支撑位 → 5分
-- **看涨吞没**: 成交量放大 → 5分
-- **启明星**: 三根K线组合 → 5分
+#### Bullish Patterns
+- **Hammer**: Appears at support → 5 points
+- **Bullish engulfing**: Volume increases → 5 points
+- **Morning star**: Three candlestick combination → 5 points
 
-#### 看跌形态
-- **倒锤子**: 出现在阻力位 → 0分
-- **看跌吞没**: 成交量放大 → 0分
-- **黄昏星**: 三根K线组合 → 0分
+#### Bearish Patterns
+- **Shooting star**: Appears at resistance → 0 points
+- **Bearish engulfing**: Volume increases → 0 points
+- **Evening star**: Three candlestick combination → 0 points
 
 ---
 
-## 4️⃣ 支撑阻力分析 (15分)
+## 4️⃣ Support Resistance Analysis (15 points)
 
-### 4.1 距离支撑位 (0-8分)
+### 4.1 Distance from Support Level (0-8 points)
 
-#### 评分标准
+#### Scoring Criteria
 ```
-距离支撑位 < 3%: 8分 (安全边际高)
-距离支撑位 3-5%: 6分 (较安全)
-距离支撑位 5-8%: 4分 (一般)
-距离支撑位 > 8%: 2分 (风险较大)
-```
-
-### 4.2 突破阻力位 (0-7分)
-
-#### 评分标准
-```
-有效突破阻力位 + 放量: 7分 (强势)
-突破阻力位但缩量: 4分 (待确认)
-接近阻力位未突破: 2分 (观望)
-远离阻力位: 0分 (空间有限)
+Distance from support < 3%: 8 points (High safety margin)
+Distance from support 3-5%: 6 points (Relatively safe)
+Distance from support 5-8%: 4 points (Average)
+Distance from support > 8%: 2 points (Higher risk)
 ```
 
-### 4.3 支撑阻力计算方法
+### 4.2 Breaking Resistance Level (0-7 points)
 
-#### 1. 历史高低点法
+#### Scoring Criteria
+```
+Effective break above resistance + volume increase: 7 points (Strong)
+Break above resistance but volume decrease: 4 points (To be confirmed)
+Approaching resistance without break: 2 points (Wait)
+Far from resistance: 0 points (Limited space)
+```
+
+### 4.3 Support Resistance Calculation Methods
+
+#### 1. Historical High-Low Method
 ```javascript
-// 找出近60日的重要高低点
+// Find important high-low points in recent 60 days
 function findSupportResistance(priceHistory) {
   const highs = findLocalHighs(priceHistory);
   const lows = findLocalLows(priceHistory);
   
-  // 支撑位：近期重要低点
+  // Support: Recent important low points
   const support = Math.max(...lows.slice(-3));
   
-  // 阻力位：近期重要高点
+  // Resistance: Recent important high points
   const resistance = Math.min(...highs.slice(-3));
   
   return { support, resistance };
 }
 ```
 
-#### 2. 均线支撑法
+#### 2. Moving Average Support Method
 ```
-短期支撑: 20日均线
-中期支撑: 60日均线
-长期支撑: 120日均线
-```
-
-#### 3. 黄金分割法
-```
-从高点回调:
-- 0.382 回调位 (浅回调)
-- 0.5 回调位 (中度回调)
-- 0.618 回调位 (深度回调)
-
-从低点反弹:
-- 1.382 目标位
-- 1.618 目标位
-- 2.0 目标位
+Short-term support: 20-day MA
+Medium-term support: 60-day MA
+Long-term support: 120-day MA
 ```
 
----
-
-## 5️⃣ 市场情绪分析 (10分)
-
-### 5.1 相对强弱 (0-5分)
-
-#### 评分标准
+#### 3. Fibonacci Retracement Method
 ```
-跑赢大盘 > 10%: 5分 (超强)
-跑赢大盘 5-10%: 4分 (强势)
-跑赢大盘 0-5%: 3分 (略强)
-跑输大盘 0-5%: 2分 (略弱)
-跑输大盘 > 5%: 0分 (弱势)
-```
+From high point retracement:
+- 0.382 retracement level (Shallow retracement)
+- 0.5 retracement level (Moderate retracement)
+- 0.618 retracement level (Deep retracement)
 
-### 5.2 板块联动 (0-5分)
-
-#### 评分标准
-```
-板块龙头 + 板块强势: 5分
-板块跟随 + 板块强势: 4分
-板块龙头 + 板块一般: 3分
-板块跟随 + 板块一般: 2分
-板块落后: 0分
+From low point rebound:
+- 1.382 target level
+- 1.618 target level
+- 2.0 target level
 ```
 
 ---
 
-## 📈 实战应用示例
+## 5️⃣ Market Sentiment Analysis (10 points)
 
-### 示例 1: 强势股评分
+### 5.1 Relative Strength (0-5 points)
 
+#### Scoring Criteria
 ```
-股票: 普元信息 (688118)
-当前价格: ¥35.50
-
-【趋势强度】30分 → 28分
-- 均线排列: 5日>10日>20日>60日(15分)
-- 价格位置: 高于所有均线 (10分)
-- 持续时间: 25天 (3分)
-
-【动量指标】25分 → 23分
-- RSI(14): 65.3 (8分)
-- MACD: 金叉+DIF>0+放大 (10分)
-- 成交量: 放量上涨 (5分)
-
-【形态识别】20分 → 18分
-- 上升三角形: 置信度 85% (12分)
-- 看涨吞没: 前日出现 (5分)
-- 形态完整度: 90% (1分)
-
-【支撑阻力】15分 → 13分
-- 距离支撑位: 6% (4分)
-- 突破阻力位: 有效突破+放量 (7分)
-- 空间评估: 良好 (2分)
-
-【市场情绪】10分 → 8分
-- 相对强弱: 跑赢大盘 8% (4分)
-- 板块联动: 板块龙头+板块强势 (4分)
-
-总分: 90分 ⭐⭐⭐⭐⭐
-评级: 强烈推荐
+Outperform market > 10%: 5 points (Strong)
+Outperform market 5-10%: 4 points (Strong)
+Outperform market 0-5%: 3 points (Slightly strong)
+Underperform market 0-5%: 2 points (Slightly weak)
+Underperform market > 5%: 0 points (Weak)
 ```
 
-### 示例 2: 弱势股评分
+### 5.2 Sector Linkage (0-5 points)
 
+#### Scoring Criteria
 ```
-股票: XXX (000000)
-当前价格: ¥10.50
-
-【趋势强度】30分 → 8分
-- 均线排列: 空头排列 (0分)
-- 价格位置: 低于所有均线 (0分)
-- 持续时间: 下跌15天 (0分)
-- 调整分: 8分 (有反弹迹象)
-
-【动量指标】25分 → 10分
-- RSI(14): 25.3 (5分 - 超卖)
-- MACD: 死叉+DIF<0 (0分)
-- 成交量: 缩量下跌 (5分 - 抛压减轻)
-
-【形态识别】20分 → 5分
-- 下降通道 (0分)
-- 看跌形态 (0分)
-- 可能底部: 5分 (RSI超卖)
-
-【支撑阻力】15分 → 6分
-- 距离支撑位: 2% (6分 - 接近支撑)
-- 阻力位: 远离 (0分)
-
-【市场情绪】10分 → 0分
-- 相对强弱: 跑输大盘 12% (0分)
-- 板块联动: 板块落后 (0分)
-
-总分: 29分 ⭐
-评级: 不推荐（但可能超跌反弹）
+Sector leader + strong sector: 5 points
+Sector follower + strong sector: 4 points
+Sector leader + average sector: 3 points
+Sector follower + average sector: 2 points
+Sector laggard: 0 points
 ```
 
 ---
 
-## 🎯 使用建议
+## 📈 Practical Application Examples
 
-### 1. 综合判断
-- 不要只看单一指标
-- 结合多个维度综合评分
-- 关注评分变化趋势
+### Example 1: Strong Stock Scoring
 
-### 2. 动态调整
-- 每日更新评分
-- 跟踪评分变化
-- 及时调整策略
+```
+Stock: Puyuan Information (688118)
+Current Price: ¥35.50
 
-### 3. 风险控制
-- 高分股票也要设止损
-- 低分股票可能超跌反弹
-- 严格执行风险管理
+【Trend Strength】30 points → 28 points
+- Moving average arrangement: 5-day>10-day>20-day>60-day(15 points)
+- Price position: Above all moving averages (10 points)
+- Duration: 25 days (3 points)
 
-### 4. 市场环境
-- 牛市: 70分以上可考虑
-- 震荡市: 80分以上
-- 熊市: 90分以上或超跌反弹
+【Momentum Indicators】25 points → 23 points
+- RSI(14): 65.3 (8 points)
+- MACD: Golden cross+DIF>0+increasing (10 points)
+- Volume: Volume increase on rise (5 points)
+
+【Pattern Recognition】20 points → 18 points
+- Ascending triangle: Confidence 85% (12 points)
+- Bullish engulfing: Appeared yesterday (5 points)
+- Pattern completeness: 90% (1 point)
+
+【Support Resistance】15 points → 13 points
+- Distance from support: 6% (4 points)
+- Break above resistance: Effective break + volume increase (7 points)
+- Space assessment: Good (2 points)
+
+【Market Sentiment】10 points → 8 points
+- Relative strength: Outperform market 8% (4 points)
+- Sector linkage: Sector leader + strong sector (4 points)
+
+Total Score: 90 points ⭐⭐⭐⭐⭐
+Rating: Strongly Recommend
+```
+
+### Example 2: Weak Stock Scoring
+
+```
+Stock: XXX (000000)
+Current Price: ¥10.50
+
+【Trend Strength】30 points → 8 points
+- Moving average arrangement: Bearish arrangement (0 points)
+- Price position: Below all moving averages (0 points)
+- Duration: Falling for 15 days (0 points)
+- Adjustment points: 8 points (Signs of rebound)
+
+【Momentum Indicators】25 points → 10 points
+- RSI(14): 25.3 (5 points - Oversold)
+- MACD: Death cross+DIF<0 (0 points)
+- Volume: Volume decrease on fall (5 points - Selling pressure easing)
+
+【Pattern Recognition】20 points → 5 points
+- Descending channel (0 points)
+- Bearish patterns (0 points)
+- Possible bottom: 5 points (RSI oversold)
+
+【Support Resistance】15 points → 6 points
+- Distance from support: 2% (6 points - Close to support)
+- Resistance level: Far away (0 points)
+
+【Market Sentiment】10 points → 0 points
+- Relative strength: Underperform market 12% (0 points)
+- Sector linkage: Sector laggard (0 points)
+
+Total Score: 29 points ⭐
+Rating: Not Recommend (But possible oversold rebound)
+```
 
 ---
 
-## 📚 进阶学习
+## 🎯 Usage Recommendations
 
-### 推荐阅读
-1. 《日本蜡烛图技术》- Steve Nison
-2. 《股票大作手回忆录》- Edwin Lefèvre
-3. 《海龟交易法则》- Curtis Faith
-4. 《技术分析实战》- Martin J. Pring
+### 1. Comprehensive Judgment
+- Don't look at single indicators only
+- Combine multiple dimensions for comprehensive scoring
+- Pay attention to scoring change trends
 
-### 实践建议
-1. 建立自己的评分模型
-2. 回测历史数据验证
-3. 记录交易日志
-4. 持续优化改进
+### 2. Dynamic Adjustment
+- Update scores daily
+- Track scoring changes
+- Adjust strategies promptly
+
+### 3. Risk Control
+- Set stop losses even for high-score stocks
+- Low-score stocks may have oversold rebounds
+- Strictly execute risk management
+
+### 4. Market Environment
+- Bull market: Consider above 70 points
+- Sideways market: Above 80 points
+- Bear market: Above 90 points or oversold rebounds
+
+---
+
+## 📚 Advanced Learning
+
+### Recommended Reading
+1. 《Japanese Candlestick Charting Techniques》- Steve Nison
+2. 《Reminiscences of a Stock Operator》- Edwin Lefèvre
+3. 《The Turtle Trading Rules》- Curtis Faith
+4. 《Technical Analysis of the Financial Markets》- Martin J. Pring
+
+### Practical Suggestions
+1. Build your own scoring model
+2. Backtest historical data validation
+3. Keep trading logs
+4. Continuously optimize and improve

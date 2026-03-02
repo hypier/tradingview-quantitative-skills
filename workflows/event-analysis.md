@@ -1,66 +1,66 @@
 ---
-description: 事件驱动分析工作流 - 追踪重大事件并分析市场影响
+description: Event-Driven Analysis Workflow - Track major events and analyze market impact
 ---
 
-# 事件驱动分析工作流
+# Event-Driven Analysis Workflow
 
-追踪重大事件，分析对市场的影响，识别受益标的，提供投资建议。
+Track major events, analyze market impact, identify beneficiary stocks, and provide investment recommendations.
 
-## 执行步骤
+## Execution Steps
 
-### 步骤 1: 获取财经日历
+### Step 1: Get Financial Calendar
 
-根据事件类型调用日历（时间跨度不超过40天）：
-
-```
-# 财报日历
-tradingview_get_calendar(type='earnings', from=now, to=now+14天, market='china')
-
-# 分红日历
-tradingview_get_calendar(type='revenue', from=now, to=now+14天, market='china')
-
-# 经济数据日历
-tradingview_get_calendar(type='economic', from=now, to=now+7天, market='america,china')
-
-# IPO 日历
-tradingview_get_calendar(type='ipo', from=now, to=now+14天, market='china')
-```
-
-### 步骤 2: 获取相关新闻
+Call calendar based on event type (time span not exceeding 40 days):
 
 ```
-# 获取特定市场新闻
+# Earnings calendar
+tradingview_get_calendar(type='earnings', from=now, to=now+14days, market='china')
+
+# Dividend calendar
+tradingview_get_calendar(type='revenue', from=now, to=now+14days, market='china')
+
+# Economic data calendar
+tradingview_get_calendar(type='economic', from=now, to=now+7days, market='america,china')
+
+# IPO calendar
+tradingview_get_calendar(type='ipo', from=now, to=now+14days, market='china')
+```
+
+### Step 2: Get Related News
+
+```
+# Get specific market news
 tradingview_get_news(market='stock', market_country='CN', lang='zh-Hans', limit=20)
 
-# 获取特定标的新闻
+# Get specific symbol news
 tradingview_get_news(symbol='SSE:600519', lang='zh-Hans', limit=10)
 
-# 获取经济新闻
+# Get economic news
 tradingview_get_news(market='economic', lang='zh-Hans', limit=10)
 ```
 
-对重要新闻获取详情：
+Get details for important news:
 ```
 tradingview_get_news_detail(news_id, lang='zh-Hans')
 ```
 
-### 步骤 3: 提取事件关键词
+### Step 3: Extract Event Keywords
 
-从日历事件和新闻中提取：
-- **公司名/代码**: 直接关联的标的
-- **行业关键词**: 用于搜索同行业受益股
-- **政策关键词**: 用于扩展影响范围
-- **事件类型**: 财报超预期/政策利好/行业事件/突发事件
+Extract from calendar events and news:
+- **Company name/symbol**: Directly related stocks
+- **Industry keywords**: Used to search for same-industry beneficiary stocks
+- **Policy keywords**: Used to expand impact scope
+- **Event type**: Earnings beat/policy positive/industry event/breaking news
 
-### 步骤 4: 搜索受益标的
+### Step 4: Search Beneficiary Stocks
 
-用提取的关键词搜索相关标的：
+Search related stocks using extracted keywords:
 
 ```
-tradingview_search_market(query='关键词', filter='stock', limit=20)
+tradingview_search_market(query='keyword', filter='stock', limit=20)
 ```
 
-对于行业事件，还可通过排行榜查找同板块股票：
+For industry events, also find same-sector stocks via leaderboard:
 ```
 tradingview_get_leaderboard(
   asset_type='stocks', tab='gainers',
@@ -68,77 +68,77 @@ tradingview_get_leaderboard(
 )
 ```
 
-### 步骤 5: 分析受益标的行情
+### Step 5: Analyze Beneficiary Stock Quotes
 
-对识别出的受益标的（5-10只），获取行情和技术面：
+For identified beneficiary stocks (5-10), get quotes and technical analysis:
 
 ```
-tradingview_get_quote_batch(symbols=[...])  # 实时行情
-tradingview_get_ta(symbol, include_indicators=true)  # 技术面确认
+tradingview_get_quote_batch(symbols=[...])  # Real-time quotes
+tradingview_get_ta(symbol, include_indicators=true)  # Technical confirmation
 ```
 
-### 步骤 6: 评估影响程度
+### Step 6: Assess Impact Level
 
-对每个受益标的评估：
+Assess each beneficiary stock:
 
-| 因素 | 权重 | 评估维度 |
-|------|------|---------|
-| 事件重要性 | 30% | 对行业/公司的根本性影响 |
-| 相关度 | 25% | 标的与事件的直接关联程度 |
-| 时效性 | 20% | 事件影响的持续时间 |
-| 预期差 | 15% | 市场是否已充分定价 |
-| 确定性 | 10% | 事件落地的确定性 |
+| Factor | Weight | Assessment Dimension |
+|--------|--------|---------------------|
+| Event Importance | 30% | Fundamental impact on industry/company |
+| Relevance | 25% | Direct correlation between stock and event |
+| Timeliness | 20% | Duration of event impact |
+| Expectation Gap | 15% | Whether market has fully priced in |
+| Certainty | 10% | Certainty of event materialization |
 
-影响等级：
-- **强正面（+3）**: 直接受益，业绩有明确提升
-- **正面（+2）**: 间接受益，行业景气度提升
-- **轻微正面（+1）**: 情绪面利好
-- **中性（0）**: 影响有限
-- **负面（-1/-2/-3）**: 对称的负面影响
+Impact levels:
+- **Strong Positive (+3)**: Direct beneficiary, clear earnings improvement
+- **Positive (+2)**: Indirect beneficiary, industry prosperity improvement
+- **Slight Positive (+1)**: Sentiment positive
+- **Neutral (0)**: Limited impact
+- **Negative (-1/-2/-3)**: Symmetrical negative impact
 
-### 步骤 7: 生成分析报告
+### Step 7: Generate Analysis Report
 
 ```markdown
-# 事件驱动分析报告
+# Event-Driven Analysis Report
 
-## 事件概述
-- 事件: [事件描述]
-- 时间: [发生/预期时间]
-- 类型: [财报/政策/行业/突发]
-- 重要性: [高/中/低]
+## Event Overview
+- Event: [Event description]
+- Time: [Occurrence/expected time]
+- Type: [Earnings/Policy/Industry/Breaking]
+- Importance: [High/Medium/Low]
 
-## 影响分析
-- 直接影响: ...
-- 间接影响: ...
-- 影响持续时间: [短期/中期/长期]
+## Impact Analysis
+- Direct impact: ...
+- Indirect impact: ...
+- Impact duration: [Short-term/Medium-term/Long-term]
 
-## 受益标的分析
+## Beneficiary Stock Analysis
 
-### 1. [标的名称] (代码) - 影响等级: +3
-- 关联度: 直接受益，[原因]
-- 当前价: ¥XX（涨跌幅 XX%）
-- 技术面: RSI=XX, TA信号=[Buy/Sell]
-- 操作建议: ...
+### 1. [Stock Name] (Symbol) - Impact Level: +3
+- Relevance: Direct beneficiary, [reason]
+- Current price: ¥XX (Change XX%)
+- Technical: RSI=XX, TA signal=[Buy/Sell]
+- Trading recommendation: ...
 
-### 2. [标的名称] ...
+### 2. [Stock Name] ...
 
-## 风险因素
-- [风险1: 事件落地不及预期]
-- [风险2: 市场已充分定价]
+## Risk Factors
+- [Risk 1: Event materialization below expectations]
+- [Risk 2: Market has fully priced in]
 
-## 操作建议
-- 短期策略: ...
-- 中期策略: ...
+## Trading Recommendations
+- Short-term strategy: ...
+- Medium-term strategy: ...
 ```
 
-## 示例
+## Example
 
-**用户**: "分析云计算涨价对相关公司的影响"
+**User**: "Analyze the impact of cloud computing price increases on related companies"
 
-**执行**:
-1. `get_news(market='stock', market_country='CN', lang='zh-Hans')` → 相关新闻
-2. `get_news_detail(news_id)` → 新闻详情
-3. `search_market(query='云计算', filter='stock')` → 相关标的
-4. `get_leaderboard(tab='gainers', market_code='china')` → 涨幅榜验证
-5. `get_quote_batch` + `get_ta` → 行情和技术面
-6. 评估影响程度 → 生成分析报告
+**Execution**:
+1. `get_news(market='stock', market_country='CN', lang='zh-Hans')` → Related news
+2. `get_news_detail(news_id)` → News details
+3. `search_market(query='云计算', filter='stock')` → Related stocks
+4. `get_leaderboard(tab='gainers', market_code='china')` → Verify gainers list
+5. `get_quote_batch` + `get_ta` → Quotes and technical analysis
+6. Assess impact level → Generate analysis report

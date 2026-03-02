@@ -1,95 +1,95 @@
 ---
-description: 财经新闻简报工作流 - 获取并总结财经新闻
+description: Financial News Briefing Workflow - Get and summarize financial news
 ---
 
-# 财经新闻简报工作流
+# Financial News Briefing Workflow
 
-获取指定国家/地区的财经新闻，分析影响并生成结构化简报。
+Get financial news for specified countries/regions, analyze impact, and generate structured briefings.
 
-## 执行步骤
+## Execution Steps
 
-### 步骤 1: 确定目标市场
+### Step 1: Determine Target Market
 
-常用 market_country 和 lang 组合：
+Common market_country and lang combinations:
 
-| 市场 | market_country | lang |
-|------|---------------|------|
-| 中国 | CN | zh-Hans |
-| 美国 | US | en |
-| 日本 | JP | ja |
-| 香港 | HK | zh-Hans 或 en |
-| 韩国 | KR | ko |
+| Market | market_country | lang |
+|--------|---------------|------|
+| China | CN | zh-Hans |
+| United States | US | en |
+| Japan | JP | ja |
+| Hong Kong | HK | zh-Hans or en |
+| South Korea | KR | ko |
 
-### 步骤 2: 获取新闻列表
+### Step 2: Get News List
 
 ```
 tradingview_get_news(
   market_country='CN', lang='zh-Hans', limit=10,
-  market='stock'  # 可选过滤: stock/crypto/forex/futures/bond/etf/index/economic
+  market='stock'  # Optional filter: stock/crypto/forex/futures/bond/etf/index/economic
 )
 ```
 
-也可按标的获取：
+Can also get by symbol:
 ```
 tradingview_get_news(symbol='NASDAQ:AAPL', lang='en', limit=10)
 ```
 
-### 步骤 3: 获取新闻详情
+### Step 3: Get News Details
 
-对每条新闻获取完整内容：
+Get full content for each news item:
 
 ```
 tradingview_get_news_detail(news_id='tag:reuters.com,2026:newsml_xxx', lang='zh-Hans')
 ```
 
-返回：标题、描述、完整内容、相关标的、标签、storyPath。
+Returns: title, description, full content, related symbols, tags, storyPath.
 
-新闻链接格式：`https://www.tradingview.com{storyPath}`
+News link format: `https://www.tradingview.com{storyPath}`
 
-### 步骤 4: 分析与总结
+### Step 4: Analysis and Summary
 
-对每条新闻提取：
-- 事件主体（公司/行业/政策）
-- 影响范围和持续时间
-- 受益/受损标的
-- 投资建议
+Extract from each news item:
+- Event subject (company/industry/policy)
+- Impact scope and duration
+- Beneficiary/affected symbols
+- Investment recommendations
 
-### 步骤 5: 生成简报
+### Step 5: Generate Briefing
 
 ```markdown
-# [国家/地区] 财经新闻简报 - YYYY-MM-DD
+# [Country/Region] Financial News Briefing - YYYY-MM-DD
 
-## 今日要闻
+## Today's Headlines
 
-### 1. [新闻标题]
-- 事件: [简要描述]
-- 影响: [市场影响分析]
-- 相关标的: [股票代码]
-- 原文: https://www.tradingview.com{storyPath}
+### 1. [News Title]
+- Event: [Brief description]
+- Impact: [Market impact analysis]
+- Related symbols: [Stock codes]
+- Source: https://www.tradingview.com{storyPath}
 
-## 板块动态
-| 板块 | 主要新闻 | 受影响标的 | 趋势 |
-|------|---------|-----------|------|
+## Sector Updates
+| Sector | Main News | Affected Symbols | Trend |
+|--------|-----------|------------------|-------|
 
-## 投资机会与风险
-- 机会: ...
-- 风险: ...
+## Investment Opportunities and Risks
+- Opportunities: ...
+- Risks: ...
 ```
 
-## 示例
+## Examples
 
-**用户**: "生成今日中国财经新闻简报"
+**User**: "Generate today's China financial news briefing"
 
-**执行**:
-1. `get_news(market_country='CN', lang='zh-Hans', limit=10)` → 新闻列表
-2. 对每条 `get_news_detail(news_id, lang='zh-Hans')` → 完整内容
-3. 分析影响、归类板块
-4. 生成结构化简报
+**Execution**:
+1. `get_news(market_country='CN', lang='zh-Hans', limit=10)` → News list
+2. For each `get_news_detail(news_id, lang='zh-Hans')` → Full content
+3. Analyze impact, categorize by sector
+4. Generate structured briefing
 
-**用户**: "对比中美日三国财经新闻"
+**User**: "Compare financial news from China, US, and Japan"
 
-**执行**:
-1. 分别 `get_news` 获取 CN/US/JP 新闻
-2. 分别获取详情
-3. 跨市场对比分析
-4. 生成对比简报
+**Execution**:
+1. `get_news` separately for CN/US/JP news
+2. Get details separately
+3. Cross-market comparative analysis
+4. Generate comparison briefing

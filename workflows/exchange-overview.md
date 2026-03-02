@@ -1,98 +1,98 @@
 ---
-description: 交易所概览工作流 - 查看交易所信息和市场配置
+description: Exchange Overview Workflow - View exchange information and market configuration
 ---
 
-# 交易所概览工作流
+# Exchange Overview Workflow
 
-查看 TradingView 支持的交易所列表、市场配置和可用资产类型。
+View the list of exchanges supported by TradingView, market configurations, and available asset types.
 
-## 执行步骤
+## Execution Steps
 
-### 步骤 1: 确定查询类型
+### Step 1: Determine Query Type
 
-根据用户需求确定查询类型：
-- **exchanges**: 查看交易所列表
-- **markets**: 查看市场代码
-- **tabs**: 查看排行榜分类标签
-- **columnsets**: 查看数据列配置
-- **languages**: 查看支持的语言
+Determine query type based on user needs:
+- **exchanges**: View exchange list
+- **markets**: View market codes
+- **tabs**: View leaderboard category tabs
+- **columnsets**: View data column configurations
+- **languages**: View supported languages
 
-### 步骤 2: 调用元数据工具
+### Step 2: Call Metadata Tool
 
-调用 `tradingview_get_metadata` 获取配置信息：
+Call `tradingview_get_metadata` to get configuration information:
 
 ```
-参数说明：
-- type: 元数据类型（必填）
-  - markets: 市场代码列表（68+ 个市场）
-  - tabs: 排行榜标签（按资产类型分类）
-  - columnsets: 数据列配置（按资产类型分类）
-  - languages: 支持的语言列表
-  - exchanges: 交易所列表（353+ 个交易所）
-- asset_type: 资产类型过滤（可选，仅用于 tabs）
+Parameter description:
+- type: Metadata type (required)
+  - markets: Market code list (68+ markets)
+  - tabs: Leaderboard tabs (categorized by asset type)
+  - columnsets: Data column configurations (categorized by asset type)
+  - languages: Supported language list
+  - exchanges: Exchange list (353+ exchanges)
+- asset_type: Asset type filter (optional, only for tabs)
   - stocks, indices, crypto, futures, forex, bonds, corporate_bonds, etfs
 ```
 
-### 步骤 3: 格式化输出
+### Step 3: Format Output
 
-根据查询类型格式化输出：
+Format output based on query type:
 
-**交易所列表**：
-- 证券交易所：NASDAQ、NYSE、HKEX、SSE、SZSE、TSE、LSE 等
-- 加密货币交易所：Binance、Coinbase、Kraken、OKX、Bybit 等
+**Exchange List**:
+- Stock exchanges: NASDAQ, NYSE, HKEX, SSE, SZSE, TSE, LSE, etc.
+- Cryptocurrency exchanges: Binance, Coinbase, Kraken, OKX, Bybit, etc.
 
-**市场代码**：
-- 北美：america、canada
-- 欧洲：uk、germany、france
-- 亚洲：china、japan、korea、india
-- 其他：australia、brazil 等
+**Market Codes**:
+- North America: america, canada
+- Europe: uk, germany, france
+- Asia: china, japan, korea, india
+- Others: australia, brazil, etc.
 
-**排行榜标签**：
-- 股票：gainers、losers、large-cap、active 等
-- 加密货币：all、gainers、losers、large-cap 等
-- 其他资产类型的标签
+**Leaderboard Tabs**:
+- Stocks: gainers, losers, large-cap, active, etc.
+- Crypto: all, gainers, losers, large-cap, etc.
+- Other asset type tabs
 
-### 步骤 4: 提供使用指引
+### Step 4: Provide Usage Guidance
 
-指导用户如何使用获取的信息：
-- 如何使用市场代码查询排行榜
-- 如何使用交易所前缀搜索标的
-- 如何选择合适的排行榜标签
+Guide users on how to use the obtained information:
+- How to use market codes to query leaderboards
+- How to use exchange prefixes to search symbols
+- How to select appropriate leaderboard tabs
 
-## 示例对话
+## Example Conversations
 
-**用户**: "TradingView 支持哪些交易所？"
+**User**: "Which exchanges does TradingView support?"
 
-**执行**:
-1. 调用 `tradingview_get_metadata`，type="exchanges"
-2. 分类展示证券交易所和加密货币交易所
-3. 说明交易所总数（353+）
-
----
-
-**用户**: "查询美股市场有哪些排行榜？"
-
-**执行**:
-1. 调用 `tradingview_get_metadata`，type="tabs"，asset_type="stocks"
-2. 展示股票排行榜标签：gainers、losers、large-cap 等
-3. 说明如何使用这些标签查询排行榜
+**Execution**:
+1. Call `tradingview_get_metadata`, type="exchanges"
+2. Display stock exchanges and cryptocurrency exchanges by category
+3. Indicate total number of exchanges (353+)
 
 ---
 
-**用户**: "支持哪些国家的股票市场？"
+**User**: "What leaderboards are available for US stocks?"
 
-**执行**:
-1. 调用 `tradingview_get_metadata`，type="markets"
-2. 展示市场代码列表：america、china、japan、uk 等
-3. 说明市场代码用于排行榜查询
+**Execution**:
+1. Call `tradingview_get_metadata`, type="tabs", asset_type="stocks"
+2. Display stock leaderboard tabs: gainers, losers, large-cap, etc.
+3. Explain how to use these tabs to query leaderboards
 
 ---
 
-**用户**: "排行榜可以显示哪些数据列？"
+**User**: "Which countries' stock markets are supported?"
 
-**执行**:
-1. 调用 `tradingview_get_metadata`，type="columnsets"
-2. 按资产类型展示可用数据列：
-   - 股票：overview、performance、valuation、dividends 等
-   - 加密货币：overview、performance 等
-3. 说明如何在排行榜查询中使用 columnset 参数
+**Execution**:
+1. Call `tradingview_get_metadata`, type="markets"
+2. Display market code list: america, china, japan, uk, etc.
+3. Explain that market codes are used for leaderboard queries
+
+---
+
+**User**: "What data columns can be displayed on leaderboards?"
+
+**Execution**:
+1. Call `tradingview_get_metadata`, type="columnsets"
+2. Display available data columns by asset type:
+   - Stocks: overview, performance, valuation, dividends, etc.
+   - Crypto: overview, performance, etc.
+3. Explain how to use the columnset parameter in leaderboard queries

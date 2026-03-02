@@ -1,493 +1,493 @@
-# 技术形态识别库
+# Technical Pattern Recognition Library
 
-> 经典技术形态识别算法和交易策略
-
----
-
-## 📋 形态分类
-
-### 反转形态
-- 双底 (W底)
-- 双顶 (M顶)
-- 头肩底
-- 头肩顶
-- 圆弧底
-- 圆弧顶
-
-### 整理形态
-- 上升三角形
-- 下降三角形
-- 对称三角形
-- 旗形整理
-- 矩形整理
-- 楔形整理
-
-### K线形态
-- 锤子线
-- 倒锤子
-- 吞没形态
-- 启明星/黄昏星
-- 十字星
+> Classic technical pattern recognition algorithms and trading strategies
 
 ---
 
-## 🔄 反转形态
+## 📋 Pattern Classification
 
-### 1. 双底 (W底)
+### Reversal Patterns
+- Double Bottom (W-Bottom)
+- Double Top (M-Top)
+- Head and Shoulders Bottom
+- Head and Shoulders Top
+- Rounding Bottom
+- Rounding Top
 
-#### 形态特征
+### Continuation Patterns
+- Ascending Triangle
+- Descending Triangle
+- Symmetrical Triangle
+- Flag Pattern
+- Rectangle Pattern
+- Wedge Pattern
+
+### Candlestick Patterns
+- Hammer
+- Inverted Hammer
+- Engulfing Pattern
+- Morning Star/Evening Star
+- Doji
+
+---
+
+## 🔄 Reversal Patterns
+
+### 1. Double Bottom (W-Bottom)
+
+#### Pattern Characteristics
 ```
-价格走势呈现 "W" 形状
-两个低点价格接近
-中间有一个高点（颈线）
+Price movement forms a "W" shape
+Two lows are close in price
+Middle high point (neckline)
 ```
 
-#### 识别条件
+#### Recognition Criteria
 
-1. **两个低点价格相差 < 3%**
+1. **Price difference between two lows < 3%**
 ```javascript
 const priceDiff = Math.abs(low1.price - low2.price) / low1.price;
 if (priceDiff > 0.03) return false;
 ```
 
-2. **两个低点时间间隔 > 10天**
+2. **Time interval between two lows > 10 days**
 ```javascript
 const timeDiff = (low2.time - low1.time) / (24 * 60 * 60);
 if (timeDiff < 10) return false;
 ```
 
-3. **颈线高度 > 10%**
+3. **Neckline height > 10%**
 ```javascript
 const necklineHeight = (neckline.price - low1.price) / low1.price;
 if (necklineHeight < 0.1) return false;
 ```
 
-4. **第二个低点成交量 < 第一个低点**
+4. **Second low volume < First low volume**
 ```javascript
 if (low2.volume >= low1.volume) return false;
 ```
 
-5. **突破颈线时成交量放大 > 1.5倍**
+5. **Breakout volume > 1.5x average**
 ```javascript
 const avgVolume = calculateAvgVolume(history, 20);
 if (breakoutVolume < avgVolume * 1.5) return false;
 ```
 
-#### 置信度计算
+#### Confidence Calculation
 
 ```javascript
 function calculateDoubleBottomConfidence(pattern) {
-  let score = 60; // 基础分
-  
-  // 价格相差越小越好
+  let score = 60; // Base score
+
+  // Smaller price difference is better
   const priceDiff = Math.abs(pattern.low1.price - pattern.low2.price) / pattern.low1.price;
   if (priceDiff < 0.02) score += 10;
   else if (priceDiff < 0.03) score += 5;
-  
-  // 时间间隔越长越可靠
+
+  // Longer time interval is more reliable
   const timeDiff = (pattern.low2.time - pattern.low1.time) / (24 * 60 * 60);
   if (timeDiff > 20) score += 10;
   else if (timeDiff > 15) score += 5;
-  
-  // 颈线高度越高越好
+
+  // Higher neckline is better
   const necklineHeight = (pattern.neckline - pattern.low1.price) / pattern.low1.price;
   if (necklineHeight > 0.15) score += 10;
   else if (necklineHeight > 0.12) score += 5;
-  
-  // 成交量递减
+
+  // Decreasing volume
   if (pattern.low2.volume < pattern.low1.volume * 0.8) score += 5;
-  
-  // 突破放量
+
+  // Breakout with volume expansion
   const avgVolume = pattern.avgVolume;
   if (pattern.breakoutVolume > avgVolume * 2) score += 5;
   else if (pattern.breakoutVolume > avgVolume * 1.5) score += 3;
-  
+
   return Math.min(score, 100);
 }
 ```
 
-#### 交易策略
+#### Trading Strategy
 
-**买入点**:
-- 突破颈线 + 成交量放大
-- 回踩颈线不破（二次买入机会）
+**Entry Points**:
+- Breakout above neckline + volume expansion
+- Pullback to neckline without breaking (second entry opportunity)
 
-**目标价**:
+**Target Price**:
 ```
-目标价 = 颈线价格 + (颈线价格 - 低点价格)
-```
-
-**止损价**:
-```
-止损价 = 第二个低点下方 2-3%
+Target = Neckline Price + (Neckline Price - Low Price)
 ```
 
-**成功率**:
-- 置信度 > 85%: 成功率 75%
-- 置信度 70-85%: 成功率 60%
-- 置信度 < 70%: 成功率 45%
+**Stop Loss**:
+```
+Stop Loss = 2-3% below second low
+```
+
+**Success Rate**:
+- Confidence > 85%: 75% success rate
+- Confidence 70-85%: 60% success rate
+- Confidence < 70%: 45% success rate
 
 ---
 
-### 2. 头肩底
+### 2. Head and Shoulders Bottom
 
-#### 形态特征
+#### Pattern Characteristics
 ```
-三个低点：左肩、头部、右肩
-头部低于两肩
-两肩价格接近
+Three lows: left shoulder, head, right shoulder
+Head is lower than both shoulders
+Both shoulders are close in price
 ```
 
-#### 识别条件
+#### Recognition Criteria
 
-1. **头部低于两肩 > 5%**
-2. **两肩价格相差 < 5%**
-3. **头部成交量最大**
-4. **突破颈线放量**
+1. **Head is > 5% lower than shoulders**
+2. **Price difference between shoulders < 5%**
+3. **Head has highest volume**
+4. **Breakout with volume expansion**
 
-#### 置信度计算
+#### Confidence Calculation
 
 ```javascript
 function calculateHeadShouldersConfidence(pattern) {
   let score = 60;
-  
-  // 头部深度
+
+  // Head depth
   const headDepth = (pattern.leftShoulder.price - pattern.head.price) / pattern.leftShoulder.price;
   if (headDepth > 0.1) score += 15;
   else if (headDepth > 0.07) score += 10;
-  
-  // 两肩对称性
+
+  // Shoulder symmetry
   const shoulderDiff = Math.abs(pattern.leftShoulder.price - pattern.rightShoulder.price) / pattern.leftShoulder.price;
   if (shoulderDiff < 0.03) score += 10;
   else if (shoulderDiff < 0.05) score += 5;
-  
-  // 成交量特征
-  if (pattern.head.volume > pattern.leftShoulder.volume && 
+
+  // Volume characteristics
+  if (pattern.head.volume > pattern.leftShoulder.volume &&
       pattern.head.volume > pattern.rightShoulder.volume) {
     score += 10;
   }
-  
-  // 突破放量
+
+  // Breakout volume
   if (pattern.breakoutVolume > pattern.avgVolume * 1.5) score += 5;
-  
+
   return Math.min(score, 100);
 }
 ```
 
-#### 交易策略
+#### Trading Strategy
 
-**买入点**: 突破颈线
+**Entry Point**: Breakout above neckline
 
-**目标价**:
+**Target Price**:
 ```
-目标价 = 颈线价格 + (颈线价格 - 头部价格)
+Target = Neckline Price + (Neckline Price - Head Price)
 ```
 
-**止损价**: 右肩下方
+**Stop Loss**: Below right shoulder
 
 ---
 
-### 3. 圆弧底
+### 3. Rounding Bottom
 
-#### 形态特征
+#### Pattern Characteristics
 ```
-价格呈圆弧状上升
-形成时间较长（> 30天）
-成交量呈碗状分布
+Price rises in arc shape
+Long formation time (> 30 days)
+Volume forms bowl shape
 ```
 
-#### 识别条件
+#### Recognition Criteria
 
-1. **形成时间 > 30天**
-2. **价格呈圆弧状**
-3. **左侧成交量 > 右侧成交量**
-4. **底部成交量最小**
+1. **Formation time > 30 days**
+2. **Price forms arc shape**
+3. **Left side volume > Right side volume**
+4. **Bottom has lowest volume**
 
-#### 交易策略
+#### Trading Strategy
 
-**买入点**: 突破圆弧顶部
+**Entry Point**: Breakout above arc top
 
-**目标价**: 圆弧高度的 1.5-2 倍
+**Target Price**: 1.5-2x arc height
 
-**止损价**: 圆弧底部
+**Stop Loss**: Arc bottom
 
 ---
 
-## 📐 整理形态
+## 📐 Continuation Patterns
 
-### 1. 上升三角形
+### 1. Ascending Triangle
 
-#### 形态特征
+#### Pattern Characteristics
 ```
-上边界水平（阻力位）
-下边界上升（支撑线）
-成交量逐步萎缩
-突破方向向上概率 70%
+Upper boundary horizontal (resistance level)
+Lower boundary ascending (support line)
+Volume gradually decreases
+Breakout direction upward probability 70%
 ```
 
-#### 识别条件
+#### Recognition Criteria
 
-1. **上边界水平（波动 < 2%）**
+1. **Upper boundary horizontal (fluctuation < 2%)**
 ```javascript
 const topRange = (Math.max(...tops) - Math.min(...tops)) / Math.min(...tops);
 if (topRange > 0.02) return false;
 ```
 
-2. **下边界上升**
+2. **Lower boundary ascending**
 ```javascript
 const slope = calculateSlope(bottoms);
 if (slope <= 0) return false;
 ```
 
-3. **形成时间 10-30天**
-4. **成交量萎缩**
+3. **Formation time 10-30 days**
+4. **Volume contraction**
 
-#### 置信度计算
+#### Confidence Calculation
 
 ```javascript
 function calculateAscendingTriangleConfidence(pattern) {
   let score = 60;
-  
-  // 上边界水平度
+
+  // Upper boundary horizontality
   const topRange = (Math.max(...pattern.tops) - Math.min(...pattern.tops)) / Math.min(...pattern.tops);
   if (topRange < 0.01) score += 15;
   else if (topRange < 0.02) score += 10;
-  
-  // 下边界斜率
+
+  // Lower boundary slope
   const slope = calculateSlope(pattern.bottoms);
   if (slope > 0.02) score += 10;
   else if (slope > 0.01) score += 5;
-  
-  // 成交量萎缩
+
+  // Volume contraction
   if (pattern.recentVolume < pattern.initialVolume * 0.7) score += 10;
-  
-  // 触及次数
+
+  // Touch count
   const touchCount = pattern.tops.length + pattern.bottoms.length;
   if (touchCount >= 6) score += 5;
-  
+
   return Math.min(score, 100);
 }
 ```
 
-#### 交易策略
+#### Trading Strategy
 
-**买入点**: 突破上边界 + 放量
+**Entry Point**: Breakout above upper boundary + volume expansion
 
-**目标价**:
+**Target Price**:
 ```
-目标价 = 上边界 + 三角形高度
+Target = Upper Boundary + Triangle Height
 ```
 
-**止损价**: 下边界下方
+**Stop Loss**: Below lower boundary
 
-**成功率**: 70%
+**Success Rate**: 70%
 
 ---
 
-### 2. 旗形整理
+### 2. Flag Pattern
 
-#### 形态特征
+#### Pattern Characteristics
 ```
-前期有明显上涨（旗杆）
-整理呈平行四边形
-整理时间短（< 20天）
-成交量萎缩
-突破方向与旗杆方向一致
-```
-
-#### 识别条件
-
-1. **前期涨幅 > 10%**
-2. **整理时间 < 20天**
-3. **整理幅度 < 前期涨幅的 50%**
-4. **成交量萎缩**
-
-#### 交易策略
-
-**买入点**: 突破旗形上边界
-
-**目标价**:
-```
-目标价 = 突破点 + 旗杆高度
+Prior significant uptrend (flagpole)
+Consolidation forms parallelogram
+Short consolidation time (< 20 days)
+Volume contraction
+Breakout direction consistent with flagpole
 ```
 
-**止损价**: 旗形下边界
+#### Recognition Criteria
+
+1. **Prior gain > 10%**
+2. **Consolidation time < 20 days**
+3. **Consolidation range < 50% of prior gain**
+4. **Volume contraction**
+
+#### Trading Strategy
+
+**Entry Point**: Breakout above flag upper boundary
+
+**Target Price**:
+```
+Target = Breakout Point + Flagpole Height
+```
+
+**Stop Loss**: Flag lower boundary
 
 ---
 
-### 3. 矩形整理
+### 3. Rectangle Pattern
 
-#### 形态特征
+#### Pattern Characteristics
 ```
-价格在两条水平线之间波动
-上边界和下边界都是水平的
-成交量逐步萎缩
-```
-
-#### 识别条件
-
-1. **上下边界水平（波动 < 2%）**
-2. **触及边界次数 ≥ 4次**
-3. **整理时间 10-40天**
-
-#### 交易策略
-
-**买入点**: 突破上边界 + 放量
-
-**目标价**:
-```
-目标价 = 上边界 + 矩形高度
+Price oscillates between two horizontal lines
+Both upper and lower boundaries are horizontal
+Volume gradually decreases
 ```
 
-**止损价**: 下边界下方
+#### Recognition Criteria
+
+1. **Upper and lower boundaries horizontal (fluctuation < 2%)**
+2. **Touch boundary count ≥ 4 times**
+3. **Consolidation time 10-40 days**
+
+#### Trading Strategy
+
+**Entry Point**: Breakout above upper boundary + volume expansion
+
+**Target Price**:
+```
+Target = Upper Boundary + Rectangle Height
+```
+
+**Stop Loss**: Below lower boundary
 
 ---
 
-## 🕯️ K线形态
+## 🕯️ Candlestick Patterns
 
-### 1. 锤子线
+### 1. Hammer
 
-#### 形态特征
+#### Pattern Characteristics
 ```
-实体小
-下影线长度 > 实体 × 2
-上影线很短或没有
-出现在下跌趋势末期
+Small body
+Lower shadow length > Body × 2
+Very short or no upper shadow
+Appears at end of downtrend
 ```
 
-#### 识别条件
+#### Recognition Criteria
 
 ```javascript
 function isHammer(candle) {
   const body = Math.abs(candle.close - candle.open);
   const lowerShadow = Math.min(candle.open, candle.close) - candle.low;
   const upperShadow = candle.high - Math.max(candle.open, candle.close);
-  
-  // 下影线 > 实体 × 2
+
+  // Lower shadow > Body × 2
   if (lowerShadow < body * 2) return false;
-  
-  // 上影线很短
+
+  // Very short upper shadow
   if (upperShadow > body * 0.5) return false;
-  
-  // 实体占总长度 < 30%
+
+  // Body < 30% of total length
   const totalLength = candle.high - candle.low;
   if (body / totalLength > 0.3) return false;
-  
+
   return true;
 }
 ```
 
-#### 信号强度
+#### Signal Strength
 
-**强烈买入**:
-- 出现在支撑位
-- 成交量放大
-- 次日收阳线确认
+**Strong Buy**:
+- Appears at support level
+- Volume expansion
+- Next day closes bullish for confirmation
 
-**一般买入**:
-- 出现在下跌趋势中
-- 成交量正常
+**General Buy**:
+- Appears in downtrend
+- Normal volume
 
 ---
 
-### 2. 吞没形态
+### 2. Engulfing Pattern
 
-#### 看涨吞没
+#### Bullish Engulfing
 
-**特征**:
+**Characteristics**:
 ```
-前一根: 阴线
-后一根: 阳线完全吞没前一根
-出现在下跌趋势中
-成交量放大
+Previous candle: Bearish
+Current candle: Bullish completely engulfs previous
+Appears in downtrend
+Volume expansion
 ```
 
-**识别条件**:
+**Recognition Criteria**:
 ```javascript
 function isBullishEngulfing(prev, curr) {
-  // 前一根是阴线
+  // Previous is bearish
   if (prev.close >= prev.open) return false;
-  
-  // 后一根是阳线
+
+  // Current is bullish
   if (curr.close <= curr.open) return false;
-  
-  // 完全吞没
+
+  // Complete engulfing
   if (curr.open >= prev.close && curr.close <= prev.open) return false;
   if (curr.open > prev.open || curr.close < prev.close) return false;
-  
-  // 成交量放大
+
+  // Volume expansion
   if (curr.volume < prev.volume * 1.2) return false;
-  
+
   return true;
 }
 ```
 
-#### 看跌吞没
+#### Bearish Engulfing
 
-**特征**:
+**Characteristics**:
 ```
-前一根: 阳线
-后一根: 阴线完全吞没前一根
-出现在上涨趋势中
-成交量放大
+Previous candle: Bullish
+Current candle: Bearish completely engulfs previous
+Appears in uptrend
+Volume expansion
 ```
 
 ---
 
-### 3. 启明星/黄昏星
+### 3. Morning Star/Evening Star
 
-#### 启明星（看涨）
+#### Morning Star (Bullish)
 
-**三根K线组合**:
+**Three Candle Combination**:
 ```
-第一根: 大阴线
-第二根: 小实体（十字星最佳）
-第三根: 大阳线
+First candle: Large bearish
+Second candle: Small body (doji best)
+Third candle: Large bullish
 ```
 
-**识别条件**:
+**Recognition Criteria**:
 ```javascript
 function isMorningStar(k1, k2, k3) {
-  // 第一根大阴线
+  // First large bearish
   const body1 = k1.open - k1.close;
   if (body1 < (k1.high - k1.low) * 0.6) return false;
-  
-  // 第二根小实体
+
+  // Second small body
   const body2 = Math.abs(k2.close - k2.open);
   if (body2 > (k2.high - k2.low) * 0.3) return false;
-  
-  // 第三根大阳线
+
+  // Third large bullish
   const body3 = k3.close - k3.open;
   if (body3 < (k3.high - k3.low) * 0.6) return false;
-  
-  // 第三根收盘价 > 第一根实体中部
+
+  // Third close > First body midpoint
   if (k3.close < (k1.open + k1.close) / 2) return false;
-  
+
   return true;
 }
 ```
 
 ---
 
-## 🚫 形态失败识别
+## 🚫 Pattern Failure Recognition
 
-### 假突破特征
+### False Breakout Characteristics
 
-1. **突破后成交量未放大**
+1. **Volume not expanded after breakout**
 ```javascript
 if (breakoutVolume < avgVolume * 1.3) {
   return { type: 'fake_breakout', reason: 'volume_not_confirmed' };
 }
 ```
 
-2. **突破后快速回落**
+2. **Quick reversal after breakout**
 ```javascript
 if (closePrice < breakoutPrice * 0.97) {
   return { type: 'fake_breakout', reason: 'quick_reversal' };
 }
 ```
 
-3. **突破幅度 < 3%**
+3. **Breakout magnitude < 3%**
 ```javascript
 const breakoutPercent = (breakoutPrice - resistance) / resistance;
 if (breakoutPercent < 0.03) {
@@ -495,7 +495,7 @@ if (breakoutPercent < 0.03) {
 }
 ```
 
-4. **突破后横盘不涨**
+4. **Sideways movement after breakout**
 ```javascript
 const daysAfterBreakout = 5;
 const priceChange = (currentPrice - breakoutPrice) / breakoutPrice;
@@ -504,129 +504,129 @@ if (priceChange < 0.02 && daysPassed > daysAfterBreakout) {
 }
 ```
 
-### 应对策略
+### Response Strategies
 
-**确认突破**:
-- 等待突破后 2-3 天确认
-- 观察成交量配合
-- 设置止损位（突破点下方 3%）
+**Confirm Breakout**:
+- Wait 2-3 days after breakout for confirmation
+- Observe volume cooperation
+- Set stop loss (3% below breakout point)
 
-**假突破止损**:
-- 快速止损，不要犹豫
-- 重新评估形态
-- 等待新的机会
-
----
-
-## 📊 实战案例
-
-### 案例 1: BTC/USDT 上升三角形
-
-```
-时间: 2026年2月15日 - 3月1日
-形态: 上升三角形
-
-识别过程:
-1. 上边界: $68,200 (水平阻力)
-2. 下边界: 上升趋势线
-3. 触及次数: 上边界 3次，下边界 4次
-4. 成交量: 逐步萎缩
-5. 置信度: 85%
-
-交易策略:
-- 买入点: 突破 $68,200 并站稳
-- 目标价: $72,000 (形态高度 $3,800)
-- 止损价: $66,500
-- 风险收益比: 1:2.4
-
-结果: 
-- 3月2日突破 $68,200
-- 3月5日达到目标价 $72,000
-- 成功率: ✅
-```
-
-### 案例 2: 普元信息双底形态
-
-```
-时间: 2026年1月10日 - 2月20日
-形态: 双底 (W底)
-
-识别过程:
-1. 第一个低点: ¥28.50 (1月10日)
-2. 第二个低点: ¥28.20 (2月5日)
-3. 价格相差: 1.05% ✅
-4. 时间间隔: 26天 ✅
-5. 颈线: ¥33.00
-6. 颈线高度: 15.9% ✅
-7. 成交量: 递减 ✅
-8. 置信度: 92%
-
-交易策略:
-- 买入点: 突破 ¥33.00
-- 目标价: ¥37.50
-- 止损价: ¥27.50
-- 风险收益比: 1:2.7
-
-结果:
-- 2月20日突破颈线
-- 3月1日达到 ¥35.50 (目标价未到但盈利可观)
-- 成功率: ✅
-```
+**False Breakout Stop Loss**:
+- Quick stop loss, don't hesitate
+- Re-evaluate pattern
+- Wait for new opportunities
 
 ---
 
-## 💡 使用建议
+## 📊 Practical Examples
 
-### 1. 形态识别优先级
+### Example 1: BTC/USDT Ascending Triangle
 
-**高优先级**:
-- 双底/双顶
-- 头肩底/头肩顶
-- 上升三角形
+```
+Time: February 15 - March 1, 2026
+Pattern: Ascending Triangle
 
-**中优先级**:
-- 旗形整理
-- 矩形整理
-- 圆弧底
+Recognition Process:
+1. Upper boundary: $68,200 (horizontal resistance)
+2. Lower boundary: Rising trendline
+3. Touch count: Upper boundary 3 times, lower boundary 4 times
+4. Volume: Gradually contracting
+5. Confidence: 85%
 
-**低优先级**:
-- 单根K线形态（需结合其他信号）
+Trading Strategy:
+- Entry: Breakout above $68,200 and hold
+- Target: $72,000 (pattern height $3,800)
+- Stop Loss: $66,500
+- Risk-Reward Ratio: 1:2.4
 
-### 2. 确认机制
+Result:
+- March 2: Breakout above $68,200
+- March 5: Reached target $72,000
+- Success: ✅
+```
 
-**必须确认**:
-- 成交量配合
-- 突破有效性
-- 时间周期
+### Example 2: Primeton Double Bottom Pattern
 
-**可选确认**:
-- 技术指标支持
-- 基本面配合
-- 市场环境
+```
+Time: January 10 - February 20, 2026
+Pattern: Double Bottom (W-Bottom)
 
-### 3. 风险控制
+Recognition Process:
+1. First low: ¥28.50 (January 10)
+2. Second low: ¥28.20 (February 5)
+3. Price difference: 1.05% ✅
+4. Time interval: 26 days ✅
+5. Neckline: ¥33.00
+6. Neckline height: 15.9% ✅
+7. Volume: Decreasing ✅
+8. Confidence: 92%
 
-**严格止损**:
-- 形态破坏立即止损
-- 不要抱有幻想
-- 保护本金第一
+Trading Strategy:
+- Entry: Breakout above ¥33.00
+- Target: ¥37.50
+- Stop Loss: ¥27.50
+- Risk-Reward Ratio: 1:2.7
 
-**分批建仓**:
-- 突破时建仓 50%
-- 确认后加仓 30%
-- 趋势延续加仓 20%
+Result:
+- February 20: Breakout above neckline
+- March 1: Reached ¥35.50 (target not reached but significant profit)
+- Success: ✅
+```
 
 ---
 
-## 📚 进阶学习
+## 💡 Usage Recommendations
 
-### 推荐书籍
-1. 《股市趋势技术分析》- Robert D. Edwards
-2. 《期货市场技术分析》- John J. Murphy
-3. 《日本蜡烛图技术》- Steve Nison
+### 1. Pattern Recognition Priority
 
-### 实践建议
-1. 建立形态识别日志
-2. 回测历史形态成功率
-3. 总结失败案例
-4. 持续优化识别算法
+**High Priority**:
+- Double Bottom/Double Top
+- Head and Shoulders Bottom/Top
+- Ascending Triangle
+
+**Medium Priority**:
+- Flag Pattern
+- Rectangle Pattern
+- Rounding Bottom
+
+**Low Priority**:
+- Single candlestick patterns (need confirmation with other signals)
+
+### 2. Confirmation Mechanism
+
+**Must Confirm**:
+- Volume cooperation
+- Breakout validity
+- Time period
+
+**Optional Confirmation**:
+- Technical indicator support
+- Fundamental cooperation
+- Market environment
+
+### 3. Risk Control
+
+**Strict Stop Loss**:
+- Exit immediately when pattern breaks
+- Don't hold false hopes
+- Capital protection first
+
+**Staged Position Building**:
+- 50% position on breakout
+- 30% add after confirmation
+- 20% add on trend continuation
+
+---
+
+## 📚 Advanced Learning
+
+### Recommended Books
+1. "Technical Analysis of Stock Trends" - Robert D. Edwards
+2. "Technical Analysis of the Futures Markets" - John J. Murphy
+3. "Japanese Candlestick Charting Techniques" - Steve Nison
+
+### Practice Recommendations
+1. Build pattern recognition journal
+2. Backtest historical pattern success rates
+3. Summarize failure cases
+4. Continuously optimize recognition algorithms

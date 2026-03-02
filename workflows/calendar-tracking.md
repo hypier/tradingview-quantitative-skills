@@ -1,101 +1,101 @@
 ---
-description: 日历事件追踪工作流 - 追踪财经日历中的重要市场事件
+description: Calendar Event Tracking Workflow - Track important market events from financial calendars
 ---
 
-# 日历事件追踪工作流
+# Calendar Event Tracking Workflow
 
-追踪财经日历中的重要市场事件，包括财报发布、分红派息、IPO上市、经济数据发布等。
+Track important market events from financial calendars, including earnings releases, dividend distributions, IPO listings, economic data releases, etc.
 
-## 执行步骤
+## Execution Steps
 
-### 步骤 1: 确定日历类型
+### Step 1: Determine Calendar Type
 
-根据用户需求确定日历类型：
-- **economic**: 经济日历（GDP、CPI、就业数据等）
-- **earnings**: 财报日历（公司财报发布日期）
-- **revenue**: 分红日历（股息派息日期）
-- **ipo**: IPO日历（新股上市日期）
+Determine the calendar type based on user needs:
+- **economic**: Economic calendar (GDP, CPI, employment data, etc.)
+- **earnings**: Earnings calendar (company earnings release dates)
+- **revenue**: Dividend calendar (dividend distribution dates)
+- **ipo**: IPO calendar (new stock listing dates)
 
-### 步骤 2: 确定时间范围
+### Step 2: Determine Time Range
 
-计算查询的时间范围（Unix 时间戳）：
-- 默认查询未来 7-14 天
-- 用户可指定具体日期范围
-- 注意：时间跨度不能超过 40 天
+Calculate the query time range (Unix timestamp):
+- Default query: next 7-14 days
+- User can specify specific date range
+- Note: Time span cannot exceed 40 days
 
-### 步骤 3: 确定市场范围
+### Step 3: Determine Market Scope
 
-根据日历类型选择市场：
-- 经济日历：支持多国家（america, china, japan 等）
-- 财报/分红/IPO：默认 america，可指定其他市场
+Select market based on calendar type:
+- Economic calendar: Supports multiple countries (america, china, japan, etc.)
+- Earnings/Dividend/IPO: Default is america, can specify other markets
 
-### 步骤 4: 调用日历工具
+### Step 4: Call Calendar Tool
 
-调用 `tradingview_get_calendar` 获取日历数据：
+Call `tradingview_get_calendar` to retrieve calendar data:
 
 ```
-参数说明：
-- type: 日历类型（必填）
-  - economic: 经济事件
-  - earnings: 财报发布
-  - revenue: 分红派息
-  - ipo: 新股上市
-- from: 开始时间（必填，Unix 时间戳）
-- to: 结束时间（必填，Unix 时间戳）
-- market: 市场代码（可选，逗号分隔）
+Parameter description:
+- type: Calendar type (required)
+  - economic: Economic events
+  - earnings: Earnings releases
+  - revenue: Dividend distributions
+  - ipo: New stock listings
+- from: Start time (required, Unix timestamp)
+- to: End time (required, Unix timestamp)
+- market: Market code (optional, comma-separated)
 ```
 
-### 步骤 5: 筛选和排序事件
+### Step 5: Filter and Sort Events
 
-根据用户关注点筛选：
-- 按重要性排序
-- 按行业/板块筛选
-- 按具体标的筛选
+Filter based on user focus:
+- Sort by importance
+- Filter by industry/sector
+- Filter by specific securities
 
-### 步骤 6: 生成日历报告
+### Step 6: Generate Calendar Report
 
-输出格式化的日历报告：
-- 事件列表（时间、事件名称、预期值、实际值）
-- 重要事件高亮
-- 潜在影响分析
-- 建议关注的标的
+Output formatted calendar report:
+- Event list (time, event name, expected value, actual value)
+- Highlight important events
+- Potential impact analysis
+- Recommended securities to watch
 
-## 示例对话
+## Example Conversations
 
-**用户**: "下周有哪些重要财报？"
+**User**: "What important earnings are coming next week?"
 
-**执行**:
-1. 计算下周的时间范围（from/to 时间戳）
-2. 调用 `tradingview_get_calendar`，type="earnings"
-3. 返回财报列表，标注市场关注度高的公司
-4. 建议关注可能超预期的标的
-
----
-
-**用户**: "查看未来两周的美国经济数据发布"
-
-**执行**:
-1. 计算未来两周的时间范围
-2. 调用 `tradingview_get_calendar`，type="economic"，market="america"
-3. 返回 CPI、非农、GDP 等重要数据发布时间
-4. 分析数据对市场的潜在影响
+**Execution**:
+1. Calculate next week's time range (from/to timestamps)
+2. Call `tradingview_get_calendar` with type="earnings"
+3. Return earnings list, highlighting companies with high market attention
+4. Suggest securities that may exceed expectations
 
 ---
 
-**用户**: "查看本月有哪些新股上市"
+**User**: "Check US economic data releases for the next two weeks"
 
-**执行**:
-1. 计算本月的时间范围
-2. 调用 `tradingview_get_calendar`，type="ipo"
-3. 返回新股列表，包含发行价、上市日期等
-4. 分析新股的行业分布和打新建议
+**Execution**:
+1. Calculate time range for next two weeks
+2. Call `tradingview_get_calendar` with type="economic", market="america"
+3. Return important data release times like CPI, non-farm payrolls, GDP, etc.
+4. Analyze potential market impact of the data
 
 ---
 
-**用户**: "我持有的股票近期有分红吗？"
+**User**: "Check which new stocks are listing this month"
 
-**执行**:
-1. 获取用户持仓股票列表
-2. 调用 `tradingview_get_calendar`，type="revenue"
-3. 筛选用户持仓股票的分红信息
-4. 返回除息日、派息日、分红金额等
+**Execution**:
+1. Calculate time range for this month
+2. Call `tradingview_get_calendar` with type="ipo"
+3. Return new stock list including offering price, listing date, etc.
+4. Analyze industry distribution of new stocks and IPO recommendations
+
+---
+
+**User**: "Are any of my holdings paying dividends soon?"
+
+**Execution**:
+1. Get user's stock holdings list
+2. Call `tradingview_get_calendar` with type="revenue"
+3. Filter dividend information for user's holdings
+4. Return ex-dividend date, payment date, dividend amount, etc.

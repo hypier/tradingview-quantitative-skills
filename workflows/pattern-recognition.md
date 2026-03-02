@@ -1,117 +1,117 @@
 ---
-description: 技术形态识别工作流 - 自动识别经典技术形态并提供交易策略
+description: Pattern Recognition Workflow - Automatically identify classic technical patterns and provide trading strategies
 ---
 
-# 技术形态识别工作流
+# Pattern Recognition Workflow
 
-基于K线数据和技术指标，识别经典技术形态，提供置信度评估和交易策略建议。
+Based on candlestick data and technical indicators, identify classic technical patterns, provide confidence assessment and trading strategy recommendations.
 
-形态识别算法和成功率统计参见 `references/pattern-library.md`。
+Pattern recognition algorithms and success rate statistics can be found in `references/pattern-library.md`.
 
-## 执行步骤
+## Execution Steps
 
-### 步骤 1: 获取历史K线数据
+### Step 1: Get Historical Candlestick Data
 
-获取足够长的日线数据用于形态识别：
+Get sufficiently long daily data for pattern recognition:
 
 ```
 tradingview_get_price(symbol, timeframe='D', range=120)
 ```
 
-对于短期形态（K线组合），额外获取小时线：
+For short-term patterns (candlestick combinations), additionally get hourly data:
 ```
 tradingview_get_price(symbol, timeframe='60', range=100)
 ```
 
-可选：`type='HeikinAshi'` 获取平均K线，更清晰地显示趋势结构。
+Optional: `type='HeikinAshi'` to get Heikin Ashi candles for clearer trend structure visualization.
 
-### 步骤 2: 获取技术指标
+### Step 2: Get Technical Indicators
 
 ```
 tradingview_get_ta(symbol, include_indicators=true)
 ```
 
-关键指标用于形态确认：
-- **RSI**: 超买超卖状态，背离信号
-- **MACD**: 金叉死叉，动能方向
-- **成交量**: 形态突破时的量能配合
-- **ADX**: 趋势强度
+Key indicators for pattern confirmation:
+- **RSI**: Overbought/oversold status, divergence signals
+- **MACD**: Golden cross/death cross, momentum direction
+- **Volume**: Volume cooperation during pattern breakout
+- **ADX**: Trend strength
 
-### 步骤 3: 识别形态
+### Step 3: Identify Patterns
 
-基于K线数据识别形态（参见 `references/pattern-library.md`）：
+Identify patterns based on candlestick data (see `references/pattern-library.md`):
 
-**反转形态**（出现在趋势末端）：
-- 双底/双顶：两个低点/高点接近，颈线突破确认
-- 头肩底/头肩顶：三个低点/高点，中间最低/最高
-- 圆弧底/圆弧顶：逐步转向
+**Reversal Patterns** (appear at trend ends):
+- Double Bottom/Top: Two lows/highs close together, neckline breakout confirmation
+- Head and Shoulders Bottom/Top: Three lows/highs, middle is lowest/highest
+- Rounding Bottom/Top: Gradual reversal
 
-**整理形态**（出现在趋势中继）：
-- 上升/下降三角形：一边水平，一边斜向
-- 旗形/楔形：窄幅通道
-- 矩形：水平通道
+**Continuation Patterns** (appear during trend continuation):
+- Ascending/Descending Triangle: One side horizontal, one side diagonal
+- Flag/Wedge: Narrow channel
+- Rectangle: Horizontal channel
 
-**K线形态**（1-3根K线组合）：
-- 锤子线/倒锤子
-- 看涨/看跌吞没
-- 启明星/黄昏星
+**Candlestick Patterns** (1-3 candle combinations):
+- Hammer/Inverted Hammer
+- Bullish/Bearish Engulfing
+- Morning Star/Evening Star
 
-### 步骤 4: 计算置信度
+### Step 4: Calculate Confidence
 
-置信度因素（0-100%）：
-- 形态完整度（形状是否标准）
-- 成交量配合（突破时放量加分）
-- 技术指标确认（RSI/MACD 方向一致加分）
-- 时间跨度（形态持续时间越长越可靠）
-- 回测位置（颈线回测后站稳加分）
+Confidence factors (0-100%):
+- Pattern completeness (whether shape is standard)
+- Volume cooperation (volume expansion on breakout adds points)
+- Technical indicator confirmation (RSI/MACD direction consistency adds points)
+- Time span (longer pattern duration is more reliable)
+- Retest position (standing firm after neckline retest adds points)
 
-### 步骤 5: 生成交易策略
+### Step 5: Generate Trading Strategy
 
-根据形态类型计算关键价位：
+Calculate key price levels based on pattern type:
 
 ```
-入场价 = 颈线突破价（或形态突破价）
-止损价 = 形态最低点下方（反转形态）/ 通道下沿下方（整理形态）
-目标价 = 入场价 + 形态高度（量度涨幅）
-风险收益比 = (目标价 - 入场价) / (入场价 - 止损价)
+Entry price = Neckline breakout price (or pattern breakout price)
+Stop loss = Below pattern lowest point (reversal) / Below channel lower boundary (continuation)
+Target price = Entry price + Pattern height (measured move)
+Risk-reward ratio = (Target - Entry) / (Entry - Stop loss)
 ```
 
-仅在风险收益比 > 1.5 时建议交易。
+Only recommend trades when risk-reward ratio > 1.5.
 
-### 步骤 6: 输出分析报告
+### Step 6: Output Analysis Report
 
 ```markdown
-# [标的] 技术形态分析
+# [Symbol] Technical Pattern Analysis
 
-## 识别到的形态
-### [形态名称] (置信度: XX%)
-- 形态描述: ...
-- 关键价位: 颈线 ¥XX
-- 成交量配合: [放量/缩量/正常]
+## Identified Pattern
+### [Pattern Name] (Confidence: XX%)
+- Pattern description: ...
+- Key levels: Neckline ¥XX
+- Volume cooperation: [Expansion/Contraction/Normal]
 
-## 技术指标确认
-- RSI(14): XX ([超买/超卖/健康])
-- MACD: [金叉/死叉], DIF=[正/负]
-- ADX: XX ([有趋势/无趋势])
+## Technical Indicator Confirmation
+- RSI(14): XX ([Overbought/Oversold/Healthy])
+- MACD: [Golden cross/Death cross], DIF=[Positive/Negative]
+- ADX: XX ([Trending/Non-trending])
 
-## 交易策略
-- 方向: [做多/做空/观望]
-- 入场价: ¥XX (条件: [突破颈线/回踩确认])
-- 止损价: ¥XX
-- 目标价: ¥XX
-- 风险收益比: 1:X.X
+## Trading Strategy
+- Direction: [Long/Short/Wait]
+- Entry price: ¥XX (Condition: [Breakout neckline/Pullback confirmation])
+- Stop loss: ¥XX
+- Target price: ¥XX
+- Risk-reward ratio: 1:X.X
 
-## 风险提示
-- [列出该形态的失败场景]
+## Risk Warnings
+- [List failure scenarios for this pattern]
 ```
 
-## 示例
+## Example
 
-**用户**: "分析 BTC/USDT 的技术形态"
+**User**: "Analyze BTC/USDT technical patterns"
 
-**执行**:
-1. `get_price(symbol='BINANCE:BTCUSDT', timeframe='D', range=120)` → 日K线
-2. `get_ta(symbol='BINANCE:BTCUSDT', include_indicators=true)` → 技术指标
-3. 分析K线数据识别形态（查阅 `references/pattern-library.md`）
-4. 计算置信度和关键价位
-5. 生成交易策略报告
+**Execution**:
+1. `get_price(symbol='BINANCE:BTCUSDT', timeframe='D', range=120)` → Daily candles
+2. `get_ta(symbol='BINANCE:BTCUSDT', include_indicators=true)` → Technical indicators
+3. Analyze candlestick data to identify patterns (refer to `references/pattern-library.md`)
+4. Calculate confidence and key price levels
+5. Generate trading strategy report

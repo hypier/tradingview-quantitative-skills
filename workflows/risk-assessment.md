@@ -1,129 +1,129 @@
 ---
-description: 风险评估工作流 - 仓位管理和风险控制建议
+description: Risk assessment workflow - Position management and risk control recommendations
 ---
 
-# 风险评估工作流
+# Risk Assessment Workflow
 
-专业的仓位管理和风险控制建议系统。详细的风险管理方法论参见 `references/risk-management.md`。
+Professional position management and risk control recommendation system. For detailed risk management methodology, see `references/risk-management.md`.
 
-## 执行步骤
+## Execution Steps
 
-### 步骤 1: 获取历史K线数据
+### Step 1: Get Historical K-line Data
 
-获取足够长的日线数据用于波动率计算：
+Get sufficiently long daily data for volatility calculation:
 
 ```python
-tradingview_get_price(symbol, timeframe='D', range=250)  # 约1年日线
+tradingview_get_price(symbol, timeframe='D', range=250)  # Approximately 1 year daily data
 ```
 
-### 步骤 2: 获取实时行情
+### Step 2: Get Real-time Quotes
 
 ```python
 tradingview_get_quote(symbol, session='regular')
 ```
 
-提取：当前价、52周高低、成交量、买卖盘。
+Extract: Current price, 52-week high/low, volume, bid/ask.
 
-### 步骤 3: 获取技术指标
+### Step 3: Get Technical Indicators
 
 ```python
 tradingview_get_ta(symbol, include_indicators=true)
 ```
 
-关键指标用于止损位计算：
-- **Pivot Points**: 支撑/阻力位（S1/S2/S3, R1/R2/R3）
-- **SMA/EMA**: 均线支撑（SMA20/50/200）
-- **ATR**: 平均真实波幅（用于动态止损）
-- **Beta**: 相对市场波动（用于仓位调整）
+Key indicators for stop loss calculation:
+- **Pivot Points**: Support/resistance levels (S1/S2/S3, R1/R2/R3)
+- **SMA/EMA**: Moving average support (SMA20/50/200)
+- **ATR**: Average True Range (for dynamic stop loss)
+- **Beta**: Relative market volatility (for position adjustment)
 
-### 步骤 4: 计算波动率
+### Step 4: Calculate Volatility
 
-基于日线数据计算：
-- **日收益率标准差** = std(每日涨跌幅)
-- **年化波动率** = 日标准差 × √252
-- **最大回撤** = max(历史高点到低点的回撤)
-- **Beta系数**: 参考 TA 指标中的 Beta 值
+Based on daily data calculation:
+- **Daily return standard deviation** = std(daily change percentage)
+- **Annualized volatility** = Daily std × √252
+- **Maximum drawdown** = max(historical peak to trough drawdown)
+- **Beta coefficient**: Reference Beta value in TA indicators
 
-### 步骤 5: 计算仓位建议
+### Step 5: Calculate Position Recommendations
 
-根据用户总资金和风险偏好（参见 `references/risk-management.md`）：
+Based on user's total capital and risk preference (see `references/risk-management.md`):
 
-**凯利公式**:
+**Kelly Formula**:
 ```python
 f = (bp - q) / b
-其中: b=赔率, p=胜率, q=1-p
-建议使用半凯利(f/2)更保守
+where: b=odds, p=win rate, q=1-p
+Recommend using half Kelly (f/2) for more conservative approach
 ```
 
-**波动率调仓**:
+**Volatility-adjusted Position Sizing**:
 ```python
-建议仓位% = 目标日波动 / 标的日波动
-例: 目标日波动2%，标的日波动4% → 最大仓位50%
+Recommended position % = Target daily volatility / Instrument daily volatility
+Example: Target daily volatility 2%, instrument daily volatility 4% → Max position 50%
 ```
 
-**分批建仓建议**:
-- 首仓: 总仓位的 30-40%
-- 加仓1: 确认趋势后加 30%
-- 加仓2: 突破关键位再加 30%
+**Staggered Entry Recommendations**:
+- First position: 30-40% of total position
+- Add position 1: Add 30% after trend confirmation
+- Add position 2: Add another 30% after breaking key levels
 
-### 步骤 6: 计算止损止盈
+### Step 6: Calculate Stop Loss and Take Profit
 
-**止损位计算**（取最合理的一个）：
-- ATR止损: 当前价 - 2×ATR
-- 均线止损: 最近的均线支撑下方（SMA20 或 SMA50）
-- Pivot止损: S1 或 S2 下方
-- 形态止损: 形态低点下方
+**Stop Loss Calculation** (choose the most reasonable one):
+- ATR stop: Current price - 2×ATR
+- MA stop: Below recent moving average support (SMA20 or SMA50)
+- Pivot stop: Below S1 or S2
+- Pattern stop: Below pattern low
 
-**止盈位计算**:
-- ATR目标: 当前价 + 3×ATR
-- Pivot目标: R1、R2、R3
-- 量度目标: 根据形态高度计算
+**Take Profit Calculation**:
+- ATR target: Current price + 3×ATR
+- Pivot target: R1, R2, R3
+- Measured target: Calculate based on pattern height
 
-**风险收益比**: 必须 > 1.5，理想 > 2.0
+**Risk-Reward Ratio**: Must be > 1.5, ideally > 2.0
 
-### 步骤 7: 生成风险管理计划
+### Step 7: Generate Risk Management Plan
 
 ```markdown
-# [标的] 风险评估报告
+# [Instrument] Risk Assessment Report
 
-## 波动性分析
-- 年化波动率: XX%
-- 近20日日均波幅: XX%
-- Beta系数: XX
-- 最大回撤: XX%
+## Volatility Analysis
+- Annualized volatility: XX%
+- Recent 20-day average daily range: XX%
+- Beta coefficient: XX
+- Maximum drawdown: XX%
 
-## 仓位建议（基于总资金 ¥XX万）
-- 建议总仓位: XX%（¥XX）
-- 最大单笔: ¥XX
-- 分批方案:
-  - 首仓 ¥XX @ ¥XX（当前价）
-  - 加仓1 ¥XX @ ¥XX（条件：XX确认）
-  - 加仓2 ¥XX @ ¥XX（条件：突破XX）
+## Position Recommendations (Based on total capital ¥XX ten thousand)
+- Recommended total position: XX% (¥XX)
+- Maximum single trade: ¥XX
+- Staggered entry plan:
+  - First position ¥XX @ ¥XX (current price)
+  - Add position 1 ¥XX @ ¥XX (condition: XX confirmation)
+  - Add position 2 ¥XX @ ¥XX (condition: break above XX)
 
-## 止损止盈方案
-- 止损价: ¥XX（距当前 -XX%）
-  - 方法: [ATR/均线/Pivot]
-- 止盈目标1: ¥XX（+XX%）
-- 止盈目标2: ¥XX（+XX%）
-- 风险收益比: 1:X.X
+## Stop Loss and Take Profit Plan
+- Stop loss price: ¥XX (XX% below current)
+  - Method: [ATR/MA/Pivot]
+- Take profit target 1: ¥XX (+XX%)
+- Take profit target 2: ¥XX (+XX%)
+- Risk-reward ratio: 1:X.X
 
-## 最大亏损预估
-- 单笔最大亏损: ¥XX（占总资金XX%）
-- 建议单笔风险不超过总资金的 2%
+## Maximum Loss Estimation
+- Maximum loss per trade: ¥XX (XX% of total capital)
+- Recommend single trade risk not exceeding 2% of total capital
 
-## 风险提示
-- [波动率风险/流动性风险/事件风险等]
+## Risk Warnings
+- [Volatility risk/Liquidity risk/Event risk etc.]
 ```
 
-## 示例
+## Example
 
-**用户**: "我有10万资金，想买普元信息，应该买多少？"
+**User**: "I have 100k capital, want to buy Puyuan Information, how much should I buy?"
 
-**执行**:
+**Execution**:
 1. `search_market(query='普元信息')` → SSE:688118
-2. `get_price(symbol='SSE:688118', timeframe='D', range=250)` → 日K线
-3. `get_quote(symbol='SSE:688118')` → 实时价格
-4. `get_ta(symbol='SSE:688118', include_indicators=true)` → 技术指标
-5. 计算波动率 → 凯利公式 → 仓位建议
-6. 计算止损止盈位 → 风险收益比
-7. 生成风险管理计划、止损止盈策略、风险收益比的完整方案。
+2. `get_price(symbol='SSE:688118', timeframe='D', range=250)` → Daily K-lines
+3. `get_quote(symbol='SSE:688118')` → Real-time price
+4. `get_ta(symbol='SSE:688118', include_indicators=true)` → Technical indicators
+5. Calculate volatility → Kelly formula → Position recommendations
+6. Calculate stop loss/take profit levels → Risk-reward ratio
+7. Generate complete risk management plan, stop loss/take profit strategy, risk-reward ratio plan.
