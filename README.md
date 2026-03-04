@@ -295,7 +295,7 @@ Combining historical K-line data and technical indicators, simple strategy valid
 
 - **API Documentation**: `references/api-documentation.md`
 - **Tools Guide**: `references/mcp-tools-guide.md`
-- **Practical Cases**: `references/china-a-stock-examples.md`
+- **Practical Cases**: `references/us-stock-examples.md`
 
 ## Disclaimer
 
