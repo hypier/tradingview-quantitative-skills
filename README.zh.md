@@ -36,9 +36,13 @@ npx skills add hypier/tradingview-quantitative-skills
 - **macOS/Linux**: `~/Library/Application Support/Cursor/mcp_config.json`
 - **Windows**: `%APPDATA%\\Cursor\\mcp_config.json`
 
+> **📖 安全提示**：请阅读 [SECURITY.md](SECURITY.md) 了解 API 密钥管理和数据隐私的重要信息。
+
 #### 方法一：使用 RapidAPI（推荐，开箱即用）
 
 访问 https://rapidapi.com/hypier/api/tradingview-data1 申请免费 API Key，然后配置：
+
+> **⚠️ 安全警告**：切勿将真实的 API 密钥提交到版本控制系统。请妥善保管您的 API 密钥。下面的示例使用占位符，您必须将其替换为实际的密钥。
 
 ```json
 {
@@ -51,7 +55,7 @@ npx skills add hypier/tradingview-quantitative-skills
         "--header",
         "x-api-host: tradingview-data1.p.rapidapi.com",
         "--header",
-        "x-api-key: YOUR_RAPIDAPI_KEY"
+        "x-api-key: <YOUR_RAPIDAPI_KEY_HERE>"
       ]
     }
   }
@@ -63,7 +67,7 @@ npx skills add hypier/tradingview-quantitative-skills
 2. 注册/登录 RapidAPI 账号
 3. 订阅免费计划（Free tier）
 4. 复制你的 API Key
-5. 替换上面配置中的 `YOUR_RAPIDAPI_KEY`
+5. 将上面配置中的 `<YOUR_RAPIDAPI_KEY_HERE>` 替换为你的实际 API 密钥
 6. 重启 Cursor/Claude Desktop
 
 #### 方法二：使用自建 JWT Token 服务
@@ -72,16 +76,20 @@ npx skills add hypier/tradingview-quantitative-skills
 
 **步骤 1**：生成 JWT Token
 
+> **⚠️ 安全警告**：将 `<YOUR_RAPIDAPI_KEY_HERE>` 替换为你的实际 API 密钥。切勿分享或提交你的 API 密钥。
+
 ```bash
 curl --request POST \
   --url https://tradingview-data1.p.rapidapi.com/api/mcp/generate \
   --header 'Content-Type: application/json' \
   --header 'x-rapidapi-host: tradingview-data1.p.rapidapi.com' \
-  --header 'x-rapidapi-key: YOUR_RAPIDAPI_KEY' \
+  --header 'x-rapidapi-key: <YOUR_RAPIDAPI_KEY_HERE>' \
   --data '{}'
 ```
 
 **步骤 2**：将返回的 JWT Token 配置到 MCP
+
+> **⚠️ 安全警告**：将 `<YOUR_JWT_TOKEN_HERE>` 替换为步骤 1 返回的实际 JWT token。切勿将 token 提交到版本控制系统。
 
 ```json
 {
@@ -90,7 +98,7 @@ curl --request POST \
       "type": "streamable-http",
       "url": "https://mcp.tradingviewapi.com/mcp",
       "headers": {
-        "Authorization": "Bearer YOUR_JWT_TOKEN",
+        "Authorization": "Bearer <YOUR_JWT_TOKEN_HERE>",
         "Accept": "application/json, text/event-stream"
       }
     }
@@ -243,6 +251,8 @@ tradingview-quantitative-skills/
 ├── README.md                    # 本文件 - 用户指南
 ├── README.zh.md                 # 中文版用户指南
 ├── SKILL.md                     # AI 技能描述（给 AI 看的）
+├── SECURITY.md                  # 安全策略和最佳实践
+├── .gitignore                   # Git 忽略敏感文件的模式
 ├── references/                  # 参考资料
 │   ├── api-documentation.md     # 完整 API 文档和元数据字典
 │   ├── mcp-tools-guide.md       # MCP 工具使用指南

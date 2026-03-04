@@ -1,0 +1,31 @@
+# API Keys and Secrets
+*.key
+*.secret
+.env
+.env.local
+.env.*.local
+
+# Configuration files with sensitive data
+mcp_config.json
+*_config.json
+config.local.*
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+tmp/
+temp/
+*.tmp

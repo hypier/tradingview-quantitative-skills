@@ -33,12 +33,16 @@ npx skills add hypier/tradingview-quantitative-skills
 Add TradingView MCP server to Cursor or Claude Desktop configuration file:
 
 **Configuration file paths**:
-- **macOS/Linux**: `~/Library/Application Support/Cursor/mcp_config.json`  
+- **macOS/Linux**: `~/Library/Application Support/Cursor/mcp_config.json`
 - **Windows**: `%APPDATA%\Cursor\mcp_config.json`
+
+> **📖 Security Notice**: Please read [SECURITY.md](SECURITY.md) for important information about API key management and data privacy.
 
 #### Method 1: Use RapidAPI (Recommended, Ready to Use)
 
 Visit https://rapidapi.com/hypier/api/tradingview-data1 to apply for a free API Key, then configure:
+
+> **⚠️ SECURITY WARNING**: Never commit your real API key to version control. Keep your API key secure and private. The example below uses a placeholder that you must replace with your actual key.
 
 ```json
 {
@@ -51,7 +55,7 @@ Visit https://rapidapi.com/hypier/api/tradingview-data1 to apply for a free API 
         "--header",
         "x-api-host: tradingview-data1.p.rapidapi.com",
         "--header",
-        "x-api-key: YOUR_RAPIDAPI_KEY"
+        "x-api-key: <YOUR_RAPIDAPI_KEY_HERE>"
       ]
     }
   }
@@ -63,7 +67,7 @@ Visit https://rapidapi.com/hypier/api/tradingview-data1 to apply for a free API 
 2. Register/login to RapidAPI account
 3. Subscribe to free plan (Free tier)
 4. Copy your API Key
-5. Replace `YOUR_RAPIDAPI_KEY` in the configuration above
+5. Replace `<YOUR_RAPIDAPI_KEY_HERE>` in the configuration above with your actual API key
 6. Restart Cursor/Claude Desktop
 
 #### Method 2: Use Self-Built JWT Token Service
@@ -72,16 +76,20 @@ If you already have a RapidAPI Key, you can use a self-built JWT Token service:
 
 **Step 1**: Generate JWT Token
 
+> **⚠️ SECURITY WARNING**: Replace `<YOUR_RAPIDAPI_KEY_HERE>` with your actual API key. Never share or commit your API key.
+
 ```bash
 curl --request POST \
   --url https://tradingview-data1.p.rapidapi.com/api/mcp/generate \
   --header 'Content-Type: application/json' \
   --header 'x-rapidapi-host: tradingview-data1.p.rapidapi.com' \
-  --header 'x-rapidapi-key: YOUR_RAPIDAPI_KEY' \
+  --header 'x-rapidapi-key: <YOUR_RAPIDAPI_KEY_HERE>' \
   --data '{}'
 ```
 
 **Step 2**: Configure the returned JWT Token to MCP
+
+> **⚠️ SECURITY WARNING**: Replace `<YOUR_JWT_TOKEN_HERE>` with the actual JWT token from Step 1. Never commit tokens to version control.
 
 ```json
 {
@@ -90,7 +98,7 @@ curl --request POST \
       "type": "streamable-http",
       "url": "https://mcp.tradingviewapi.com/mcp",
       "headers": {
-        "Authorization": "Bearer YOUR_JWT_TOKEN",
+        "Authorization": "Bearer <YOUR_JWT_TOKEN_HERE>",
         "Accept": "application/json, text/event-stream"
       }
     }
@@ -242,6 +250,8 @@ Complete list: `tradingview_get_metadata(type='languages')`
 tradingview-quantitative-skills/
 ├── README.md                    # This file - User guide
 ├── SKILL.md                     # AI skill description (for AI)
+├── SECURITY.md                  # Security policy and best practices
+├── .gitignore                   # Git ignore patterns for sensitive files
 ├── references/                  # Reference materials
 │   ├── api-documentation.md     # Complete API documentation and metadata dictionary
 │   ├── mcp-tools-guide.md       # MCP tools usage guide
