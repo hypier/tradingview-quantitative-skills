@@ -96,7 +96,7 @@ curl --request POST \
   "mcpServers": {
     "tradingview": {
       "type": "streamable-http",
-      "url": "https://mcp.tradingviewapi.com/mcp",
+      "url": "https://mcp.example-mcp-server.com/mcp",
       "headers": {
         "Authorization": "Bearer <YOUR_JWT_TOKEN_HERE>",
         "Accept": "application/json, text/event-stream"

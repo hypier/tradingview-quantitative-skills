@@ -44,7 +44,7 @@ When using this skill, the following data may be sent to external services:
 This skill relies on the following external services:
 
 - **RapidAPI** (https://rapidapi.com) - API gateway and authentication
-- **TradingView Data API** (https://tradingviewapi.com) - Market data provider
+- **TradingView Data API** (https://example-mcp-server.com) - Market data provider
 
 These services have their own security policies and terms of service. Please review:
 - [RapidAPI Terms of Service](https://rapidapi.com/terms/)
