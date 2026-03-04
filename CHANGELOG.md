@@ -1,3 +1,9 @@
+## 1.0.1 - 2026-03-04
+
+### Documentation
+- Add installation badges and quick install section
+- Shorten SKILL.md description for skills CLI compatibility
+
 ## 1.0.0 - 2026-03-02
 
 ### Features
