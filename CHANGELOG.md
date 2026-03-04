@@ -1,3 +1,10 @@
+## 1.0.3 - 2026-03-04
+
+### Security
+- Replace actual service domains with example domains in documentation to prevent confusion and improve security
+- Remove detailed configuration instructions for example domains
+- Add clarification notes that API endpoints use example domains for documentation purposes
+
 ## 1.0.2 - 2026-03-04
 
 ### Documentation
