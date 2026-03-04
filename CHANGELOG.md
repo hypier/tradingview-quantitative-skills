@@ -1,3 +1,9 @@
+## 1.0.2 - 2026-03-04
+
+### Documentation
+- Update reference documentation links, change practical examples from A-shares to US stocks
+- Enhance API key security instructions and configuration examples
+
 ## 1.0.1 - 2026-03-04
 
 ### Documentation
